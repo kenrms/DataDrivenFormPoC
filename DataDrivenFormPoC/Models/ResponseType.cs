@@ -1,4 +1,4 @@
-﻿namespace DataDrivenFormPoC.Domain
+﻿namespace DataDrivenFormPoC.Models
 {
     public enum ResponseType
     {

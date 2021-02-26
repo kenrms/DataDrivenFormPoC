@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace DataDrivenFormPoC.Domain
+namespace DataDrivenFormPoC.Models
 {
     public class User
     {

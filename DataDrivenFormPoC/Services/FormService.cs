@@ -1,16 +1,12 @@
-﻿using DataDrivenFormPoC.Data;
-using System;
+﻿using DataDrivenFormPoC.Brokers;
 
 namespace DataDrivenFormPoC.Services
 {
     public class FormService : IFormService
     {
-        private readonly FormContext FormContext;
 
-        public FormService(FormContext formContext)
+        public FormService(StorageBroker formContext)
         {
-            this.FormContext = formContext;
-            this.FormContext.Database.EnsureCreated();
         }
     }
 }

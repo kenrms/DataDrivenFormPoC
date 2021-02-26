@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DataDrivenFormPoC.Domain
+namespace DataDrivenFormPoC.Models
 {
     public class OptionResponse
     {

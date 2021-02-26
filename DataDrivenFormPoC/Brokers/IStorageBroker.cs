@@ -1,4 +1,10 @@
-﻿namespace DataDrivenFormPoC.Data
+﻿using DataDrivenFormPoC.Models;
+using System.Linq;
+
+namespace DataDrivenFormPoC.Brokers
 {
-    public interface IStorageBroker { }
+    public partial interface IStorageBroker
+    {
+        public IQueryable<Form> SelectAllForms();
+    }
 }

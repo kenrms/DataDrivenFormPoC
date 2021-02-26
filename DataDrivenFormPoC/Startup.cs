@@ -1,4 +1,4 @@
-using DataDrivenFormPoC.Data;
+using DataDrivenFormPoC.Brokers;
 using DataDrivenFormPoC.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -23,7 +23,8 @@ namespace DataDrivenFormPoC
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
-            services.AddDbContext<FormContext>();
+            services.AddDbContext<StorageBroker>();
+            services.AddScoped<IStorageBroker, StorageBroker>();
             services.AddScoped<IFormService, FormService>();
         }
 
