@@ -4,4 +4,9 @@
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\DataDrivenFormPoC.Data\DataDrivenFormPoC.Data.csproj" />
+    <ProjectReference Include="..\DataDrivenFormPoC.Domain\DataDrivenFormPoC.Domain.csproj" />
+  </ItemGroup>
+
 </Project>

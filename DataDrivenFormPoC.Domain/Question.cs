@@ -4,7 +4,7 @@ namespace DataDrivenFormPoC.Domain
 {
     public class Question
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public ResponseType ResponseType { get; set; }
         public string QuestionText { get; set; }
         public bool IsRequired { get; set; }

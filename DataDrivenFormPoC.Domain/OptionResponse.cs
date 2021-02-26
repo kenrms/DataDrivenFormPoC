@@ -4,7 +4,7 @@ namespace DataDrivenFormPoC.Domain
 {
     public class OptionResponse
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public FormResponse FormResponse { get; set; }
         public int FormResponseId { get; set; }
         public User FilledBy { get; set; }
