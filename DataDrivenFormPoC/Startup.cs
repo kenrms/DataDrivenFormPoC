@@ -26,6 +26,11 @@ namespace DataDrivenFormPoC
             services.AddDbContext<StorageBroker>();
             services.AddScoped<IStorageBroker, StorageBroker>();
             services.AddScoped<IFormService, FormService>();
+
+            services.AddRazorPages(options =>
+            {
+                options.RootDirectory = "/Views/Pages";
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
