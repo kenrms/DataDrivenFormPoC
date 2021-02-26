@@ -6,7 +6,7 @@ namespace DataDrivenFormPoC.Models
     {
         public Guid Id { get; set; }
         public Form Form { get; set; }
-        public int FormId { get; set; }
+        public User FilledBy { get; set; }
         public DateTimeOffset DateSubmitted { get; set; }
     }
 }

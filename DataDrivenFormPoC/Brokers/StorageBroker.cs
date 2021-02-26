@@ -1,6 +1,7 @@
 ﻿using DataDrivenFormPoC.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using System;
 using System.Linq;
 
 namespace DataDrivenFormPoC.Brokers
@@ -19,8 +20,76 @@ namespace DataDrivenFormPoC.Brokers
         public StorageBroker(IConfiguration configuration)
         {
             this.Configuration = configuration;
-            this.Database.EnsureCreated();
+            EnsureTestData();
             this.Database.Migrate();
+        }
+
+        private void EnsureTestData()
+        {
+            this.Database.EnsureCreated();
+
+            if (!this.Forms.Any())
+            {
+                var testForm = new Form
+                {
+                    Id = Guid.NewGuid(),
+                    Questions = {
+                        new Question
+                        {
+                            Id = Guid.NewGuid(),
+                            IsRequired = false,
+                            QuestionText = "Question 1",
+                            ResponseType = ResponseType.RawText,
+                            Options = {
+                                new Option()
+                            },
+                            Order = 1,
+                        },
+                        new Question
+                        {
+                            Id = Guid.NewGuid(),
+                            IsRequired = false,
+                            QuestionText = "Question 2",
+                            ResponseType = ResponseType.SingleChoice,
+                            Options = {
+                                new Option{ Value = "A"},
+                                new Option{ Value = "B"},
+                                new Option{ Value = "C"},
+                            },
+                            Order = 2,
+                        },
+                        new Question
+                        {
+                            Id = Guid.NewGuid(),
+                            IsRequired = false,
+                            QuestionText = "Question 3",
+                            ResponseType = ResponseType.SingleChoice,
+                            Options = {
+                                new Option{ Value = "Yes"},
+                                new Option{ Value = "No"},
+                            },
+                            Order = 3,
+                        },
+                        new Question
+                        {
+                            Id = Guid.NewGuid(),
+                            IsRequired = false,
+                            QuestionText = "Question 4",
+                            ResponseType = ResponseType.MultipleChoice,
+                            Options = {
+                                new Option{ Value = "Pepperoni"},
+                                new Option{ Value = "Sausage"},
+                                new Option{ Value = "Chicken"},
+                                new Option{ Value = "Mushrooms"},
+                            },
+                            Order = 4,
+                        },
+                    }
+                };
+
+                this.Forms.Add(testForm);
+                this.SaveChanges();
+            }
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

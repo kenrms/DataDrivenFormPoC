@@ -11,7 +11,6 @@ namespace DataDrivenFormPoC.Models
         public bool IsRequired { get; set; }
         public int Order { get; set; }
         public Form Form { get; set; }
-        public int FormId { get; set; }
         public IList<Option> Options { get; set; }
 
         public Question()
