@@ -23,15 +23,12 @@ namespace DataDrivenFormPoC.Brokers
             this.Database.Migrate();
         }
 
-        public IQueryable<Form> SelectAllForms()
-        {
-            throw new System.NotImplementedException();
-        }
-
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             string connectionString = this.Configuration.GetConnectionString("DefaultConnection");
             optionsBuilder.UseSqlServer(connectionString);
         }
+
+        public IQueryable<Form> SelectAllForms() => this.Forms.AsQueryable();
     }
 }
