@@ -1,4 +1,6 @@
-﻿namespace DataDrivenFormPoC.Domain
+﻿using System;
+
+namespace DataDrivenFormPoC.Domain
 {
     public class Option
     {

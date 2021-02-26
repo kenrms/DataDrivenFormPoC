@@ -9,4 +9,8 @@
     <ProjectReference Include="..\DataDrivenFormPoC.Domain\DataDrivenFormPoC.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Services\" />
+  </ItemGroup>
+
 </Project>
