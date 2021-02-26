@@ -6,6 +6,7 @@
         SingleChoiceRadio,
         SingleChoiceDropDown,
         MultipleChoice,
+        Date,
         DateTime,
         Number,
         Blob

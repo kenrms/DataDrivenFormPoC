@@ -42,6 +42,8 @@ namespace DataDrivenFormPoC.Services
                                     new Option{ Id = Guid.NewGuid(), Value = "A"},
                                     new Option{ Id = Guid.NewGuid(), Value = "B"},
                                     new Option{ Id = Guid.NewGuid(), Value = "C"},
+                                    new Option{ Id = Guid.NewGuid(), Value = "D"},
+                                    new Option{ Id = Guid.NewGuid(), Value = "E"},
                                 },
                                 Order = 2,
                             },
@@ -54,6 +56,7 @@ namespace DataDrivenFormPoC.Services
                                 Options = {
                                     new Option{ Id = Guid.NewGuid(), Value = "Yes"},
                                     new Option{ Id = Guid.NewGuid(), Value = "No"},
+                                    new Option{ Id = Guid.NewGuid(), Value = "Maybe"},
                                 },
                                 Order = 3,
                             },
@@ -70,6 +73,28 @@ namespace DataDrivenFormPoC.Services
                                     new Option{ Id = Guid.NewGuid(), Value = "Mushrooms"},
                                 },
                                 Order = 4,
+                            },
+                            new Question
+                            {
+                                Id = Guid.NewGuid(),
+                                IsRequired = false,
+                                QuestionText = "Question 5",
+                                ResponseType = ResponseType.Date,
+                                Options = {
+                                    new Option{ Id = Guid.NewGuid() },
+                                },
+                                Order = 5,
+                            },
+                            new Question
+                            {
+                                Id = Guid.NewGuid(),
+                                IsRequired = false,
+                                QuestionText = "Question 6",
+                                ResponseType = ResponseType.RawText,
+                                Options = {
+                                    new Option{ Id = Guid.NewGuid() }
+                                },
+                                Order = 6,
                             },
                     }
                 }

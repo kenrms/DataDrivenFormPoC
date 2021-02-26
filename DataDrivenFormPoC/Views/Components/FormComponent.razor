@@ -5,65 +5,78 @@
         <form>
             @foreach (var question in Form.Questions)
             {
-                <div id="@question.Id">
-                    @if (GetType(question) == Models.ResponseType.RawText)
-                    {
-                        <label> @question.QuestionText</label>
-                        <br />
-                        <input />
-                    }
-                    else if (GetType(question) == Models.ResponseType.SingleChoiceDropDown)
-                    {
-                        <label> @question.QuestionText</label>
+            <div id="@question.Id">
+                @if (GetType(question) == Models.ResponseType.RawText)
+                {
+                    <label> @question.QuestionText</label>
+                    <br />
+                    <input />
+                }
+                else if (GetType(question) == Models.ResponseType.SingleChoiceDropDown)
+                {
+                    <label> @question.QuestionText</label>
 
-                        <br />
+                    <br />
 
-                        <select>
-                            @foreach (var option in question.Options)
-                            {
-                                <option value="@option.Value">@option.Value</option>
-                            }
-                        </select>
-                    }
-                    else if (GetType(question) == Models.ResponseType.SingleChoiceRadio)
-                    {
-                        <label> @question.QuestionText</label>
-                        <br />
-
+                    <select>
                         @foreach (var option in question.Options)
                         {
-                            <input type="radio"
-                                   id="@option.Id"
-                                   name="@question.Id"
-                                   value=option.Value>
+                            <option value="@option.Value">@option.Value</option>
+                        }
+                    </select>
+                }
+                else if (GetType(question) == Models.ResponseType.SingleChoiceRadio)
+                {
+                    <label> @question.QuestionText</label>
+                    <br />
 
-                            <label for="@option.Id">@option.Value</label>
+                    @foreach (var option in question.Options)
+                    {
+                        <input type="radio"
+                               id="@option.Id"
+                               name="@question.Id"
+                               value=option.Value>
 
+                        <label for="@option.Id">@option.Value</label>
+
+                        <br />
+                    }
+                }
+                else if (GetType(question) == Models.ResponseType.MultipleChoice)
+                {
+                    <label> @question.QuestionText</label>
+                    <br />
+
+                    @foreach (var (option, index) in question.Options.Select((option, i) => (option, i)))
+                    {
+                        <input type="checkbox"
+                               id="@option.Id"
+                               name="@option.Id"
+                               value=option.Value>
+
+                        <label for="@option.Id">@option.Value</label>
+
+                        @if (index != question.Options.Count() - 1)
+                        {
                             <br />
                         }
                     }
-                    else if (GetType(question) == Models.ResponseType.MultipleChoice)
-                    {
-                        <label> @question.QuestionText</label>
-                        <br />
+                }
+                else if (GetType(question) == Models.ResponseType.Date)
+                {
+                    <label> @question.QuestionText</label>
+                    <br />
 
-                        @foreach (var (option, index) in question.Options.Select((option, i) => (option, i)))
-                        {
-                            <input type="checkbox"
-                                   id="@option.Id"
-                                   name="@option.Id"
-                                   value=option.Value>
-
-                            <label for="@option.Id">@option.Value</label>
-
-                            @if (index != question.Options.Count() - 1)
-                            {
-                                <br />
-                            }
-                        }
-                    }
-                </div>
-                <br />
+                    <input type="date" />
+                }
+                else if (GetType(question) == Models.ResponseType.DateTime)
+                {
+                    <label> @question.QuestionText</label>
+                    <br />
+                    
+                    <input type="datetime-local"/>
+                }
+            </div>
                 <br />
             }
             <br />
