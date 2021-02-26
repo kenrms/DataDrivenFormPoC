@@ -16,7 +16,7 @@ namespace DataDrivenFormPoC.Views.Components
 
         protected override void OnInitialized()
         {
-            et this.Form = this.FormService.RetrieveAllForms().First();
+            this.Form = this.FormService.RetrieveAllForms().First();
 
             // TODO magically build RenderFragments based on Form data
 
