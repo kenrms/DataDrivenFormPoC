@@ -1,10 +1,12 @@
 ﻿using DataDrivenFormPoC.Models;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace DataDrivenFormPoC.Services
 {
     public interface IFormService
     {
-        IQueryable<Form> RetrieveAllForms();
+        ValueTask<List<Form>> RetrieveAllFormsAsync();
     }
 }

@@ -50,7 +50,7 @@ namespace DataDrivenFormPoC.Brokers
                             Id = Guid.NewGuid(),
                             IsRequired = false,
                             QuestionText = "Question 2",
-                            ResponseType = ResponseType.SingleChoice,
+                            ResponseType = ResponseType.SingleChoiceDropDown,
                             Options = {
                                 new Option{ Value = "A"},
                                 new Option{ Value = "B"},
@@ -63,7 +63,7 @@ namespace DataDrivenFormPoC.Brokers
                             Id = Guid.NewGuid(),
                             IsRequired = false,
                             QuestionText = "Question 3",
-                            ResponseType = ResponseType.SingleChoice,
+                            ResponseType = ResponseType.SingleChoiceRadio,
                             Options = {
                                 new Option{ Value = "Yes"},
                                 new Option{ Value = "No"},

@@ -21,7 +21,7 @@ namespace DataDrivenFormPoC
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
-            services.AddDbContext<StorageBroker>();
+            //services.AddDbContext<StorageBroker>();
             services.AddScoped<IStorageBroker, StorageBroker>();
             services.AddScoped<IFormService, FormService>();
 
