@@ -1,4 +1,5 @@
 using DataDrivenFormPoC.Data;
+using DataDrivenFormPoC.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -22,8 +23,8 @@ namespace DataDrivenFormPoC
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
-            services.AddSingleton<WeatherForecastService>();
-            services.AddDbContext<IFormContext, FormContext>();
+            services.AddDbContext<FormContext>();
+            services.AddScoped<IFormService, FormService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DataDrivenFormPoC.Data
 {
-    public class FormContext : DbContext, IFormContext
+    public class FormContext : DbContext, IStorageBroker
     {
         private readonly string ConnectionString =
             "Data Source = (localdb)\\MSSQLLocalDB; Initial Catalog = DataDrivenFormPoCAppData";

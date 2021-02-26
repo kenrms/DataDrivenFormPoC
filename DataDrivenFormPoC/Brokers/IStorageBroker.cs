@@ -1,4 +1,4 @@
 ﻿namespace DataDrivenFormPoC.Data
 {
-    public interface IFormContext { }
+    public interface IStorageBroker { }
 }

@@ -5,12 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DataDrivenFormPoC.Data\DataDrivenFormPoC.Data.csproj" />
-    <ProjectReference Include="..\DataDrivenFormPoC.Domain\DataDrivenFormPoC.Domain.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Services\" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.12" />
   </ItemGroup>
 
 </Project>
