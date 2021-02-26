@@ -3,6 +3,11 @@
 
 <ContainerComponent State="State">
     <Content>
-        Test
+        @{
+            foreach(var question in Form.Questions)
+            {
+                <DynamicQuestionComponent Question="question" />
+            }
+        }
     </Content>
 </ContainerComponent>
