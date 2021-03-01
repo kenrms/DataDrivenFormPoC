@@ -8,7 +8,7 @@
             <div id="@question.Id">
                 @if (GetType(question) == Models.ResponseType.RawText)
                 {
-                    <TextQuestionComponent Question="@question" FormComponentRef="this" />
+                    <TextQuestionComponent Question="@question" Callback="AddQuestionComponentToOptionResponders" />
                 }
                 else if (GetType(question) == Models.ResponseType.RawTextArea)
                 {

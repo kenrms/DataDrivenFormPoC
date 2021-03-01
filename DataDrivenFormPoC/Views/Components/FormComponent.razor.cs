@@ -21,12 +21,10 @@ namespace DataDrivenFormPoC.Views.Components
 
         public List<IOptionResponder> OptionResponders { get; set; }
 
-
         protected async override Task OnInitializedAsync()
         {
             this.Form = (await FormService.RetrieveAllFormsAsync()).First();
             this.OptionResponders = new List<IOptionResponder>();
-
             this.State = ComponentState.Content;
         }
 
@@ -35,8 +33,8 @@ namespace DataDrivenFormPoC.Views.Components
 
         public void HandleSubmit()
         {
-            var stop = "";
             List<OptionResponse> optionResponses = GetOptionResponses();
+            // TODO send to API
         }
 
         private List<OptionResponse> GetOptionResponses()
@@ -50,6 +48,11 @@ namespace DataDrivenFormPoC.Views.Components
             }
 
             return result;
+        }
+
+        public void AddQuestionComponentToOptionResponders(IOptionResponder optionResponder)
+        {
+            this.OptionResponders.Add(optionResponder);
         }
     }
 }

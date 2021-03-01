@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Components;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace DataDrivenFormPoC.Views.Components
 {
@@ -11,15 +12,15 @@ namespace DataDrivenFormPoC.Views.Components
         public Question Question { get; set; }
 
         [Parameter]
-        public FormComponent FormComponentRef { get; set; }
+        public EventCallback<IOptionResponder> Callback { get; set; }
 
         public string TextInput { get; private set; }
 
         protected Guid GetOptionId() => Question.Options.First().Id;
 
-        protected override void OnInitialized()
+        protected async override Task OnInitializedAsync()
         {
-            this.FormComponentRef.OptionResponders.Add(this);
+            await this.Callback.InvokeAsync(this);
         }
 
         public OptionResponse GetOptionResponse()
