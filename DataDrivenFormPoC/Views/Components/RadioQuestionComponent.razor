@@ -4,13 +4,16 @@
 @foreach (var option in Question.Options)
 {
     <label for="@option.Id">
+
         <input type="radio"
                id="@option.Id"
                name="@Question.Id"
                value="@option.Id"
                @onchange="SelectionChanged" 
                checked=@(SelectedOptionId == option.Id.ToString()) />
+
         @option.Value
+
     </label>
 
     <br />
