@@ -2,15 +2,19 @@
 
 <ContainerComponent State="State">
     <Content>
-        <form>
+        <form @onsubmit="HandleSubmit">
             @foreach (var question in Form.Questions)
             {
             <div id="@question.Id">
                 @if (GetType(question) == Models.ResponseType.RawText)
                 {
-                    <label> @question.QuestionText</label>
+                    <TextQuestionComponent Question="@question" FormComponentRef="this" />
+                }
+                else if (GetType(question) == Models.ResponseType.RawTextArea)
+                {
+                    <label>@question.QuestionText</label>
                     <br />
-                    <input />
+                    <textarea></textarea>
                 }
                 else if (GetType(question) == Models.ResponseType.SingleChoiceDropDown)
                 {
@@ -73,8 +77,8 @@
                 {
                     <label> @question.QuestionText</label>
                     <br />
-                    
-                    <input type="datetime-local"/>
+
+                    <input type="datetime-local" />
                 }
             </div>
                 <br />

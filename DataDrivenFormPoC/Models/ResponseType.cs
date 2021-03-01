@@ -3,6 +3,7 @@
     public enum ResponseType
     {
         RawText,
+        RawTextArea,
         SingleChoiceRadio,
         SingleChoiceDropDown,
         MultipleChoice,
