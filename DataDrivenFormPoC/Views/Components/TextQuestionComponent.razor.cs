@@ -1,6 +1,7 @@
 ﻿using DataDrivenFormPoC.Models;
 using Microsoft.AspNetCore.Components;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -23,8 +24,10 @@ namespace DataDrivenFormPoC.Views.Components
             await this.Callback.InvokeAsync(this);
         }
 
-        public OptionResponse GetOptionResponse()
+        public IList<OptionResponse> GetOptionResponses()
         {
+            var optionResponses = new List<OptionResponse>();
+
             var optionResponse = new OptionResponse
             {
                 Question = Question,
@@ -33,7 +36,9 @@ namespace DataDrivenFormPoC.Views.Components
 
             optionResponse.TextValue = TextInput;
 
-            return optionResponse;
+            optionResponses.Add(optionResponse);
+
+            return optionResponses;
         }
     }
 }

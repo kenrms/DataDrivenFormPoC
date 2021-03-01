@@ -43,8 +43,8 @@ namespace DataDrivenFormPoC.Views.Components
 
             foreach (var optionResponder in this.OptionResponders)
             {
-                var optionResponse = optionResponder.GetOptionResponse();
-                result.Add(optionResponse);
+                var optionResponses = optionResponder.GetOptionResponses();
+                result.AddRange(optionResponses);
             }
 
             return result;
