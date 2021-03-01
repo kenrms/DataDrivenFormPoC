@@ -1,6 +1,5 @@
 ﻿using DataDrivenFormPoC.Models;
 using Microsoft.AspNetCore.Components;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -27,7 +26,6 @@ namespace DataDrivenFormPoC.Views.Components
         public IList<OptionResponse> GetOptionResponses()
         {
             var optionResponses = new List<OptionResponse>();
-            var selectedIdAsGuid = new Guid(this.SelectedOptionId);
 
             foreach (var option in this.Question.Options)
             {
@@ -37,7 +35,7 @@ namespace DataDrivenFormPoC.Views.Components
                     Option = option,
                 };
 
-                optionResponse.IsChecked = selectedIdAsGuid == option.Id;
+                optionResponse.IsChecked = SelectedOptionId == option.Id.ToString();
 
                 optionResponses.Add(optionResponse);
             }
