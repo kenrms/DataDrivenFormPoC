@@ -5,31 +5,40 @@
         <form @onsubmit="HandleSubmit">
             @foreach (var question in Form.Questions)
             {
-            <div id="@question.Id">
-                @if (GetType(question) == Models.ResponseType.RawText)
-                {
-                    <TextQuestionComponent Question="@question" Callback="AddQuestionComponentToOptionResponders" />
-                }
-                else if (GetType(question) == Models.ResponseType.SingleChoiceDropDown)
-                {
-                    <DropDownQuestionComponent Question="@question" Callback="AddQuestionComponentToOptionResponders" />
-                }
-                else if (GetType(question) == Models.ResponseType.SingleChoiceRadio)
-                {
-                    <RadioQuestionComponent Question="@question" Callback="AddQuestionComponentToOptionResponders" />
-                }
-                else if (GetType(question) == Models.ResponseType.MultipleChoice)
-                {
-                    <CheckBoxQuestionComponent Question="@question" Callback="AddQuestionComponentToOptionResponders" />
-                }
-                else if (GetType(question) == Models.ResponseType.Date)
-                {
-                    <label> @question.QuestionText</label>
-                    <br />
+                <div id="@question.Id">
+                    @if (GetType(question) == Models.ResponseType.RawText)
+                    {
+                        <TextQuestionComponent Question="@question" 
+                                               Callback="AddQuestionComponentToOptionResponders" />
+                    }
+                    else if (GetType(question) == Models.ResponseType.SingleChoiceDropDown)
+                    {
+                        <DropDownQuestionComponent Question="@question" 
+                                                   Callback="AddQuestionComponentToOptionResponders" />
+                    }
+                    else if (GetType(question) == Models.ResponseType.SingleChoiceRadio)
+                    {
+                        <RadioQuestionComponent Question="@question" 
+                                                Callback="AddQuestionComponentToOptionResponders" />
+                    }
+                    else if (GetType(question) == Models.ResponseType.MultipleChoice)
+                    {
+                        <CheckBoxQuestionComponent Question="@question" 
+                                                   Callback="AddQuestionComponentToOptionResponders" />
+                    }
+                    else if (GetType(question) == Models.ResponseType.Date)
+                    {
+                        <DateQuestionComponent Question="@question"
+                                               Callback="AddQuestionComponentToOptionResponders" />
+                    }
+                    else
+                    {
+                        <p>
+                            Unknown Question Type: @question.ResponseType in Question @question.Id
+                        </p>
+                    }
+                </div>
 
-                    <input type="date" />
-                }
-            </div>
                 <br />
             }
             <br />

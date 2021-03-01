@@ -1,11 +1,13 @@
 ﻿using DataDrivenFormPoC.Models;
 using Microsoft.AspNetCore.Components;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace DataDrivenFormPoC.Views.Components
 {
-    public partial class RadioQuestionComponent : ComponentBase, IOptionResponder
+    public partial class DateQuestionComponent : ComponentBase, IOptionResponder
     {
         [Parameter]
         public Question Question { get; set; }
@@ -13,10 +15,9 @@ namespace DataDrivenFormPoC.Views.Components
         [Parameter]
         public EventCallback<IOptionResponder> Callback { get; set; }
 
-        public string SelectedOptionId { get; set; }
+        public DateTimeOffset DateInput { get; private set; }
 
-        void SelectionChanged(ChangeEventArgs args) =>
-            this.SelectedOptionId = args.Value.ToString();
+        protected Guid GetOptionId() => Question.Options.First().Id;
 
         protected async override Task OnInitializedAsync()
         {
@@ -27,18 +28,15 @@ namespace DataDrivenFormPoC.Views.Components
         {
             var optionResponses = new List<OptionResponse>();
 
-            foreach (var option in this.Question.Options)
+            var optionResponse = new OptionResponse
             {
-                var optionResponse = new OptionResponse
-                {
-                    Question = Question,
-                    Option = option,
-                };
+                Question = Question,
+                Option = Question.Options.First(),
+            };
 
-                optionResponse.IsChecked = SelectedOptionId == option.Id.ToString();
+            optionResponse.DateTimeValue = DateInput;
 
-                optionResponses.Add(optionResponse);
-            }
+            optionResponses.Add(optionResponse);
 
             return optionResponses;
         }
