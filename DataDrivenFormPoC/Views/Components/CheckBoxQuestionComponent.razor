@@ -1,0 +1,18 @@
+﻿<label> @Question.QuestionText</label>
+<br />
+
+@foreach (var (option, index) in Question.Options.Select((option, i) => (option, i)))
+{
+    <input type="checkbox"
+           id="@option.Id"
+           name="@option.Id"
+           value=option.Id
+           @bind="@CheckedMap[option]">
+
+    <label for="@option.Id">@option.Value</label>
+
+    @if (index != Question.Options.Count() - 1)
+    {
+        <br />
+    }
+}
