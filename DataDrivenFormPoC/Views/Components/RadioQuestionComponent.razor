@@ -1,0 +1,9 @@
+﻿<label> @Question.QuestionText</label>
+<br />
+
+@foreach (var option in Question.Options)
+{
+    <RadioOptionInputComponent Option="@option" Name="Question.Id" />    
+
+    <br />
+}

@@ -31,20 +31,7 @@
                 }
                 else if (GetType(question) == Models.ResponseType.SingleChoiceRadio)
                 {
-                    <label> @question.QuestionText</label>
-                    <br />
-
-                    @foreach (var option in question.Options)
-                    {
-                        <input type="radio"
-                               id="@option.Id"
-                               name="@question.Id"
-                               value=option.Value>
-
-                        <label for="@option.Id">@option.Value</label>
-
-                        <br />
-                    }
+                    <RadioQuestionComponent Question="@question" Callback="AddQuestionComponentToOptionResponders" />
                 }
                 else if (GetType(question) == Models.ResponseType.MultipleChoice)
                 {
