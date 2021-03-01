@@ -85,17 +85,6 @@ namespace DataDrivenFormPoC.Services
                                 },
                                 Order = 5,
                             },
-                            new Question
-                            {
-                                Id = Guid.NewGuid(),
-                                IsRequired = false,
-                                QuestionText = "Question 6",
-                                ResponseType = ResponseType.RawText,
-                                Options = {
-                                    new Option{ Id = Guid.NewGuid() }
-                                },
-                                Order = 6,
-                            },
                     }
                 }
             };
