@@ -1,0 +1,10 @@
+﻿<label> @Question.QuestionText</label>
+
+<br />
+
+<select @onchange="SelectionChanged">
+    @foreach (var option in Question.Options)
+    {
+        <option value="@option.Id" id="@option.Id">@option.Value</option>
+    }
+</select>

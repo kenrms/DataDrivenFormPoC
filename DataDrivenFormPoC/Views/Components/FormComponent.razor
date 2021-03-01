@@ -10,24 +10,9 @@
                 {
                     <TextQuestionComponent Question="@question" Callback="AddQuestionComponentToOptionResponders" />
                 }
-                else if (GetType(question) == Models.ResponseType.RawTextArea)
-                {
-                    <label>@question.QuestionText</label>
-                    <br />
-                    <textarea></textarea>
-                }
                 else if (GetType(question) == Models.ResponseType.SingleChoiceDropDown)
                 {
-                    <label> @question.QuestionText</label>
-
-                    <br />
-
-                    <select>
-                        @foreach (var option in question.Options)
-                        {
-                            <option value="@option.Value">@option.Value</option>
-                        }
-                    </select>
+                    <DropDownQuestionComponent Question="@question" Callback="AddQuestionComponentToOptionResponders" />
                 }
                 else if (GetType(question) == Models.ResponseType.SingleChoiceRadio)
                 {
@@ -43,13 +28,6 @@
                     <br />
 
                     <input type="date" />
-                }
-                else if (GetType(question) == Models.ResponseType.DateTime)
-                {
-                    <label> @question.QuestionText</label>
-                    <br />
-
-                    <input type="datetime-local" />
                 }
             </div>
                 <br />
