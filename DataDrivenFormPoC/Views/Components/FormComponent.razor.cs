@@ -30,7 +30,7 @@ namespace DataDrivenFormPoC.Views.Components
         public ResponseType GetType(Question question) =>
             question.ResponseType;
 
-        public void HandleSubmit()
+        public async void HandleSubmit()
         {
             List<OptionResponse> optionResponses = GetOptionResponses();
 
@@ -42,7 +42,12 @@ namespace DataDrivenFormPoC.Views.Components
                 OptionResponses = optionResponses,
             };
 
-            this.FormService.SubmitFormResponse(formResponse);
+            bool success = await this.FormService.SubmitFormResponse(formResponse);
+            if (success)
+            {
+                var responses = await this.FormService.RetrieveOptionResponsesForDebugForm();
+                // TODO populate UI with responses
+            }
         }
 
         private List<OptionResponse> GetOptionResponses()

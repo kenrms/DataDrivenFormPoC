@@ -2,6 +2,7 @@
 using DataDrivenFormPoC.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace DataDrivenFormPoC.Services
@@ -10,8 +11,9 @@ namespace DataDrivenFormPoC.Services
     {
         private readonly IStorageBroker storageBroker;
 
-        private List<Form> debugForms;
-        private Guid debugFormId;
+        private readonly List<Form> debugForms;
+        private Guid debugFormId = new Guid("9da7e64f-6b44-4731-9dcb-4c398788879d");
+        private FormResponse debugFormResponse;
 
         public FormService(IStorageBroker storageBroker)
         {
@@ -24,7 +26,7 @@ namespace DataDrivenFormPoC.Services
         {
             Form form = new Form
             {
-                Id = Guid.NewGuid(),
+                Id = debugFormId,
                 Questions = {
                             new Question
                             {
@@ -105,14 +107,29 @@ namespace DataDrivenFormPoC.Services
             return debugForms;
         }
 
-        public ValueTask<Dictionary<Guid, OptionResponse>> RetrieveOptionResponsesForForm(Guid formId)
+        public async ValueTask<Dictionary<Guid, List<OptionResponse>>> RetrieveOptionResponsesForDebugForm()
         {
-            throw new NotImplementedException();
+            var result = new Dictionary<Guid, List<OptionResponse>>();
+
+            foreach (var question in debugForms.First().Questions)
+            {
+                var optionResponsesForQuestion =
+                    debugFormResponse.OptionResponses
+                        .Where(optionResponse =>
+                            optionResponse.Question.Id == question.Id)
+                        .ToList();
+
+                result[question.Id] = optionResponsesForQuestion;
+            }
+
+            return result;
         }
 
-        public void SubmitFormResponse(FormResponse formResponse)
+        public async ValueTask<bool> SubmitFormResponse(FormResponse formResponse)
         {
-            throw new NotImplementedException();
+            this.debugFormResponse = formResponse;
+
+            return true;
         }
     }
 }
