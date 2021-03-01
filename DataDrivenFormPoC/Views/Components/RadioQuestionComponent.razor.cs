@@ -1,7 +1,7 @@
 ﻿using DataDrivenFormPoC.Models;
 using Microsoft.AspNetCore.Components;
+using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace DataDrivenFormPoC.Views.Components
@@ -14,6 +14,11 @@ namespace DataDrivenFormPoC.Views.Components
         [Parameter]
         public EventCallback<IOptionResponder> Callback { get; set; }
 
+        public string SelectedOptionId { get; set; }
+
+        void SelectionChanged(ChangeEventArgs args) =>
+            this.SelectedOptionId = args.Value.ToString();
+
         protected async override Task OnInitializedAsync()
         {
             await this.Callback.InvokeAsync(this);
@@ -22,16 +27,17 @@ namespace DataDrivenFormPoC.Views.Components
         public IList<OptionResponse> GetOptionResponses()
         {
             var optionResponses = new List<OptionResponse>();
+            var selectedIdAsGuid = new Guid(this.SelectedOptionId);
 
             foreach (var option in this.Question.Options)
             {
                 var optionResponse = new OptionResponse
                 {
                     Question = Question,
-                    Option = Question.Options.First(),
+                    Option = option,
                 };
 
-                // TODO set response
+                optionResponse.IsChecked = selectedIdAsGuid == option.Id;
 
                 optionResponses.Add(optionResponse);
             }

@@ -3,7 +3,15 @@
 
 @foreach (var option in Question.Options)
 {
-    <RadioOptionInputComponent Option="@option" Name="Question.Id" />    
+    <label for="@option.Id">
+        <input type="radio"
+               id="@option.Id"
+               name="@Question.Id"
+               value="@option.Id"
+               @onchange="SelectionChanged" 
+               checked=@(SelectedOptionId == option.Id.ToString()) />
+        @option.Value
+    </label>
 
     <br />
 }
