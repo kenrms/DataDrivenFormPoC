@@ -10,17 +10,22 @@ namespace DataDrivenFormPoC.Services
     {
         private readonly IStorageBroker storageBroker;
 
-        public FormService(IStorageBroker storageBroker) => this.storageBroker = storageBroker;
+        private List<Form> debugForms;
+        private Guid debugFormId;
 
-        public async ValueTask<List<Form>> RetrieveAllFormsAsync()
+        public FormService(IStorageBroker storageBroker)
         {
-            // return storageBroker.SelectAllForms().ToList();
+            this.storageBroker = storageBroker;
 
-            return new List<Form>{
-                new Form
-                {
-                    Id = Guid.NewGuid(),
-                    Questions = {
+            this.debugForms = new List<Form> { GenerateDebugForm() };
+        }
+
+        private Form GenerateDebugForm()
+        {
+            Form form = new Form
+            {
+                Id = Guid.NewGuid(),
+                Questions = {
                             new Question
                             {
                                 Id = Guid.NewGuid(),
@@ -86,8 +91,28 @@ namespace DataDrivenFormPoC.Services
                                 Order = 5,
                             },
                     }
-                }
             };
+
+            this.debugFormId = form.Id;
+
+            return form;
+        }
+
+        public async ValueTask<List<Form>> RetrieveAllFormsAsync()
+        {
+            // return storageBroker.SelectAllForms().ToList();
+
+            return debugForms;
+        }
+
+        public ValueTask<Dictionary<Guid, OptionResponse>> RetrieveOptionResponsesForForm(Guid formId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SubmitFormResponse(FormResponse formResponse)
+        {
+            throw new NotImplementedException();
         }
     }
 }

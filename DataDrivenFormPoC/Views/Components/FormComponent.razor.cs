@@ -1,7 +1,9 @@
-﻿using DataDrivenFormPoC.Models;
+﻿using DataDrivenFormPoC.Brokers;
+using DataDrivenFormPoC.Models;
 using DataDrivenFormPoC.Models.ContainerComponents;
 using DataDrivenFormPoC.Services;
 using Microsoft.AspNetCore.Components;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -32,7 +34,15 @@ namespace DataDrivenFormPoC.Views.Components
         {
             List<OptionResponse> optionResponses = GetOptionResponses();
 
-            // TODO send to API
+            var formResponse = new FormResponse
+            {
+                DateSubmitted = DateTimeOffset.Now,
+                Form = this.Form,
+                Id = new Guid(),
+                OptionResponses = optionResponses,
+            };
+
+            this.FormService.SubmitFormResponse(formResponse);
         }
 
         private List<OptionResponse> GetOptionResponses()
