@@ -13,9 +13,6 @@ namespace DataDrivenFormPoC.Views.Components
         [Inject]
         public IFormService FormService { get; set; }
 
-        [Parameter]
-        public FormComponent FormComponentRef { get; set; }
-
         public ComponentState State { get; set; }
         public Form Form { get; set; }
 
