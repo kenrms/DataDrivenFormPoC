@@ -7,13 +7,16 @@ using System.Threading.Tasks;
 
 namespace DataDrivenFormPoC.Views.Components
 {
-    public partial class TextQuestionComponent : ComponentBase, IOptionResponder
+    public partial class TextQuestionComponent : ComponentBase, IOptionResponder, IHandleProdividedOptionResponses
     {
         [Parameter]
         public Question Question { get; set; }
 
         [Parameter]
         public EventCallback<IOptionResponder> Callback { get; set; }
+
+        [Parameter]
+        public List<OptionResponse> Responses { get; set; }
 
         public string TextInput { get; private set; }
 
@@ -22,6 +25,15 @@ namespace DataDrivenFormPoC.Views.Components
         protected async override Task OnInitializedAsync()
         {
             await this.Callback.InvokeAsync(this);
+            HandleProvidedOptionResponses();
+        }
+
+        public void HandleProvidedOptionResponses()
+        {
+            if (this.Responses.Any())
+            {
+                this.TextInput = this.Responses.Single().TextValue;
+            }
         }
 
         public IList<OptionResponse> GetOptionResponses()

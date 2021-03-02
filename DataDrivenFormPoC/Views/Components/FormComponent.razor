@@ -10,7 +10,8 @@
                     {
                         case Models.ResponseType.RawText:
                             <TextQuestionComponent Question="@question"
-                                                    Callback="AddQuestionComponentToOptionResponders" />
+                                                   Callback="AddQuestionComponentToOptionResponders" 
+                                                   Responses="QuestionOptionResponseMap[question.Id]" />
                             break;
 
                         case Models.ResponseType.SingleChoiceDropDown:

@@ -4,6 +4,7 @@ using DataDrivenFormPoC.Services;
 using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace DataDrivenFormPoC.Views.Components
@@ -16,6 +17,7 @@ namespace DataDrivenFormPoC.Views.Components
         public ComponentState State { get; set; }
         public Form Form { get; set; }
         public FormResponse FormResponse { get; set; }
+        public Dictionary<Guid, List<OptionResponse>> QuestionOptionResponseMap;
         public User CurrentUser { get; set; }
 
         public List<IOptionResponder> OptionResponders { get; set; }
@@ -25,9 +27,30 @@ namespace DataDrivenFormPoC.Views.Components
             this.CurrentUser = await this.FormService.RetrieveDebugUserAsync();
             this.Form = await this.FormService.RetrieveDebugFormAsync();
             this.FormResponse = await this.FormService.RetrieveFormResponseForDebugFormAndUserAsync();
+            InitializeQuestionOptionResponseMap();
 
             this.OptionResponders = new List<IOptionResponder>();
             this.State = ComponentState.Content;
+        }
+
+        private void InitializeQuestionOptionResponseMap()
+        {
+            this.QuestionOptionResponseMap = new Dictionary<Guid, List<OptionResponse>>();
+
+            if (this.FormResponse != null)
+            {
+                this.QuestionOptionResponseMap = this.FormResponse.OptionResponses
+                    .GroupBy(optionResponse => optionResponse.Question.Id)
+                    .ToDictionary(group => group.Key, group => group.ToList());
+            }
+            else
+            {
+                foreach(var question in this.Form.Questions)
+                {
+                    this.QuestionOptionResponseMap[question.Id] =
+                        new List<OptionResponse>();
+                }
+            }
         }
 
         public ResponseType GetType(Question question) =>
