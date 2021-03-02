@@ -7,7 +7,7 @@
            id="@option.Id"
            name="@option.Id"
            value=option.Id
-           @bind="@CheckedMap[option]">
+           @bind="@GetOptionResponse(option).IsChecked">
 
     <label for="@option.Id">@option.Value</label>
 

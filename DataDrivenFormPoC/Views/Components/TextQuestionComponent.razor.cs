@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DataDrivenFormPoC.Views.Components
 {
-    public partial class TextQuestionComponent : ComponentBase, IOptionResponder, IHandleProdividedOptionResponses
+    public partial class TextQuestionComponent : ComponentBase, IOptionResponder
     {
         [Parameter]
         public Question Question { get; set; }
@@ -18,43 +18,15 @@ namespace DataDrivenFormPoC.Views.Components
         [Parameter]
         public List<OptionResponse> Responses { get; set; }
 
-        public string TextInput { get; private set; }
-
         protected Guid GetOptionId() => Question.Options.First().Id;
 
-        protected async override Task OnInitializedAsync()
-        {
+        protected async override Task OnInitializedAsync() =>
             await this.Callback.InvokeAsync(this);
-            HandleProvidedOptionResponses();
-        }
 
-        public void HandleProvidedOptionResponses()
-        {
-            if (this.Responses.Any())
-            {
-                this.TextInput = this.Responses.Single().TextValue;
-            }
-        }
+        public OptionResponse GetOptionResponse() =>
+            Responses.Single();
 
-        public IList<OptionResponse> GetOptionResponses()
-        {
-            OptionResponse optionResponse;
-
-            if (this.Responses.Any())
-            {
-                optionResponse = this.Responses.Single();
-            }
-            else
-            {
-                optionResponse = new OptionResponse();
-                this.Responses.Add(optionResponse);
-            }
-
-            optionResponse.Question = Question;
-            optionResponse.Option = Question.Options.First();
-            optionResponse.TextValue = TextInput;
-
-            return this.Responses;
-        }
+        public IList<OptionResponse> GetOptionResponses() =>
+            this.Responses;
     }
 }

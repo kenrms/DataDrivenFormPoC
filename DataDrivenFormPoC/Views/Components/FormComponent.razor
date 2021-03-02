@@ -24,7 +24,8 @@
                             break;
                         case Models.ResponseType.MultipleChoice:
                             <CheckBoxQuestionComponent Question="@question"
-                                                        Callback="AddQuestionComponentToOptionResponders" />
+                                                       Callback="AddQuestionComponentToOptionResponders"
+                                                       Responses="QuestionOptionResponseMap[question.Id]" />
                             break;
                         case Models.ResponseType.Date:
                             <DateQuestionComponent Question="@question"

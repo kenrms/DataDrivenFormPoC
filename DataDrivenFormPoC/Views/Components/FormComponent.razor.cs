@@ -45,10 +45,20 @@ namespace DataDrivenFormPoC.Views.Components
             }
             else
             {
-                foreach(var question in this.Form.Questions)
+                foreach (var question in this.Form.Questions)
                 {
                     this.QuestionOptionResponseMap[question.Id] =
                         new List<OptionResponse>();
+                    foreach (var option in question.Options)
+                    {
+                        var optionResponse = new OptionResponse
+                        {
+                            Option = option,
+                            Question = question,
+                        };
+
+                        this.QuestionOptionResponseMap[question.Id].Add(optionResponse);
+                    }
                 }
             }
         }
