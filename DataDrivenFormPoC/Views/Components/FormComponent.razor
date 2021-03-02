@@ -10,26 +10,24 @@
                     {
                         case Models.ResponseType.RawText:
                             <TextQuestionComponent Question="@question"
-                                                   Callback="AddQuestionComponentToOptionResponders" 
                                                    Responses="QuestionOptionResponseMap[question.Id]" />
                             break;
 
                         case Models.ResponseType.SingleChoiceDropDown:
-                            <DropDownQuestionComponent Question="@question"
-                                                        Callback="AddQuestionComponentToOptionResponders" />
+                            <DropDownQuestionComponent Question="@question" 
+                                                       Responses="QuestionOptionResponseMap[question.Id]" />
                             break;
                         case Models.ResponseType.SingleChoiceRadio:
-                            <RadioQuestionComponent Question="@question"
-                                                    Callback="AddQuestionComponentToOptionResponders" />
+                            <RadioQuestionComponent Question="@question" 
+                                                    Responses="QuestionOptionResponseMap[question.Id]" />
                             break;
                         case Models.ResponseType.MultipleChoice:
                             <CheckBoxQuestionComponent Question="@question"
-                                                       Callback="AddQuestionComponentToOptionResponders"
                                                        Responses="QuestionOptionResponseMap[question.Id]" />
                             break;
                         case Models.ResponseType.Date:
                             <DateQuestionComponent Question="@question"
-                                                    Callback="AddQuestionComponentToOptionResponders" />
+                                                   Responses="QuestionOptionResponseMap[question.Id]" />
                             break;
                         default:
                             <p>

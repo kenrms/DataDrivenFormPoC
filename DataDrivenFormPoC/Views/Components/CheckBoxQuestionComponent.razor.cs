@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 
 namespace DataDrivenFormPoC.Views.Components
 {
-    public partial class CheckBoxQuestionComponent :
-        ComponentBase, IOptionResponder
+    public partial class CheckBoxQuestionComponent : ComponentBase
     {
         [Parameter]
         public Question Question { get; set; }
@@ -15,14 +14,6 @@ namespace DataDrivenFormPoC.Views.Components
         public EventCallback<IOptionResponder> Callback { get; set; }
         [Parameter]
         public List<OptionResponse> Responses { get; set; }
-
-        protected async override Task OnInitializedAsync()
-        {
-            await this.Callback.InvokeAsync(this);
-        }
-
-        public IList<OptionResponse> GetOptionResponses() =>
-            this.Responses;
 
         public OptionResponse GetOptionResponse(Option option) =>
             this.Responses.Single(optionResponse => optionResponse.Option.Id == option.Id);

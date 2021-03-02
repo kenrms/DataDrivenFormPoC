@@ -20,8 +20,6 @@ namespace DataDrivenFormPoC.Views.Components
         public Dictionary<Guid, List<OptionResponse>> QuestionOptionResponseMap;
         public User CurrentUser { get; set; }
 
-        public List<IOptionResponder> OptionResponders { get; set; }
-
         protected async override Task OnInitializedAsync()
         {
             this.CurrentUser = await this.FormService.RetrieveDebugUserAsync();
@@ -29,7 +27,6 @@ namespace DataDrivenFormPoC.Views.Components
             this.FormResponse = await this.FormService.RetrieveFormResponseForDebugFormAndUserAsync();
             InitializeQuestionOptionResponseMap();
 
-            this.OptionResponders = new List<IOptionResponder>();
             this.State = ComponentState.Content;
         }
 
@@ -47,8 +44,8 @@ namespace DataDrivenFormPoC.Views.Components
             {
                 foreach (var question in this.Form.Questions)
                 {
-                    this.QuestionOptionResponseMap[question.Id] =
-                        new List<OptionResponse>();
+                    this.QuestionOptionResponseMap[question.Id] = new List<OptionResponse>();
+
                     foreach (var option in question.Options)
                     {
                         var optionResponse = new OptionResponse
@@ -86,22 +83,9 @@ namespace DataDrivenFormPoC.Views.Components
             }
         }
 
-        private List<OptionResponse> GetOptionResponses()
-        {
-            var result = new List<OptionResponse>();
-
-            foreach (var optionResponder in this.OptionResponders)
-            {
-                var optionResponses = optionResponder.GetOptionResponses();
-                result.AddRange(optionResponses);
-            }
-
-            return result;
-        }
-
-        public void AddQuestionComponentToOptionResponders(IOptionResponder optionResponder)
-        {
-            this.OptionResponders.Add(optionResponder);
-        }
+        private List<OptionResponse> GetOptionResponses() =>
+            this.QuestionOptionResponseMap
+                .SelectMany(optionResponses => optionResponses.Value)
+                .ToList();
     }
 }

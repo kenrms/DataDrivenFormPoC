@@ -13,6 +13,9 @@ namespace DataDrivenFormPoC.Views.Components
         [Parameter]
         public EventCallback<IOptionResponder> Callback { get; set; }
 
+        [Parameter]
+        public List<OptionResponse> Responses { get; set; }
+
         public string SelectedOptionId { get; set; }
 
         void SelectionChanged(ChangeEventArgs args) =>
