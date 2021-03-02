@@ -36,9 +36,7 @@ namespace DataDrivenFormPoC.Services
                     StorageBroker.debugUserId,
                     StorageBroker.debugFormId);
 
-        public ValueTask<User> RetrieveDebugUserAsync()
-        {
-            return this.storageBroker.SelectUserAsync(StorageBroker.debugUserId);
-        }
+        public ValueTask<User> RetrieveDebugUserAsync() =>
+            this.storageBroker.SelectUserAsync(StorageBroker.debugUserId);
     }
 }

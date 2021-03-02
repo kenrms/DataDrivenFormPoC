@@ -86,7 +86,7 @@ namespace DataDrivenFormPoC.Brokers
         }
 
         public async ValueTask<User> SelectUserAsync(Guid userId) =>
-    await this.Users.SingleAsync(user => user.Id == userId);
+            await this.Users.SingleAsync(user => user.Id == userId);
 
         private Form GenerateDebugFormFromFiller() => CreateFormFiller(100).Create();
 
