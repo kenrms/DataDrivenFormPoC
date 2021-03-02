@@ -8,6 +8,7 @@ namespace DataDrivenFormPoC.Services
     public interface IFormService
     {
         ValueTask<List<Form>> RetrieveAllFormsAsync();
+        ValueTask<Form> RetrieveDebugFormAsync();
         ValueTask<Dictionary<Guid, List<OptionResponse>>> RetrieveOptionResponsesForDebugForm();
         ValueTask<bool> SubmitFormResponse(FormResponse formResponse);
     }

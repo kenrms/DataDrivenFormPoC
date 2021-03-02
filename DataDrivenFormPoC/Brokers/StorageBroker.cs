@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace DataDrivenFormPoC.Brokers
 {
@@ -17,7 +18,10 @@ namespace DataDrivenFormPoC.Brokers
         public DbSet<FormResponse> FormResponses { get; set; }
         public DbSet<OptionResponse> OptionResponses { get; set; }
 
-        public StorageBroker(IConfiguration configuration)
+        public static readonly Guid debugFormId = new Guid("9da7e64f-6b44-4731-9dcb-4c398788879d");
+
+        public StorageBroker(DbContextOptions<StorageBroker> options, IConfiguration configuration)
+            : base(options)
         {
             this.Configuration = configuration;
             EnsureTestData();
@@ -38,7 +42,7 @@ namespace DataDrivenFormPoC.Brokers
         {
             var form = new Form
             {
-                Id = Guid.NewGuid(),
+                Id = debugFormId,
                 Questions = {
                             new Question
                             {
@@ -47,7 +51,7 @@ namespace DataDrivenFormPoC.Brokers
                                 QuestionText = "Question 1",
                                 ResponseType = ResponseType.RawText,
                                 Options = {
-                                    new Option{ Id = Guid.NewGuid() }
+                                    new Option{ Id = Guid.NewGuid(), Order = 1 }
                                 },
                                 Order = 1,
                             },
@@ -58,11 +62,21 @@ namespace DataDrivenFormPoC.Brokers
                                 QuestionText = "Question 2",
                                 ResponseType = ResponseType.SingleChoiceDropDown,
                                 Options = {
-                                    new Option{ Id = Guid.NewGuid(), Value = "A"},
-                                    new Option{ Id = Guid.NewGuid(), Value = "B"},
-                                    new Option{ Id = Guid.NewGuid(), Value = "C"},
-                                    new Option{ Id = Guid.NewGuid(), Value = "D"},
-                                    new Option{ Id = Guid.NewGuid(), Value = "E"},
+                                    new Option {
+                                        Id = Guid.NewGuid(),
+                                        Value = "A",
+                                        Order = 1
+                                    },
+                                    new Option{
+                                        Id = Guid.NewGuid(),
+                                        Value = "B",
+                                        Order = 2
+                                    },
+                                    new Option{
+                                        Id = Guid.NewGuid(),
+                                        Value = "C",
+                                        Order = 3
+                                    },
                                 },
                                 Order = 2,
                             },
@@ -73,9 +87,16 @@ namespace DataDrivenFormPoC.Brokers
                                 QuestionText = "Question 3",
                                 ResponseType = ResponseType.SingleChoiceRadio,
                                 Options = {
-                                    new Option{ Id = Guid.NewGuid(), Value = "Yes"},
-                                    new Option{ Id = Guid.NewGuid(), Value = "No"},
-                                    new Option{ Id = Guid.NewGuid(), Value = "Maybe"},
+                                    new Option {
+                                        Id = Guid.NewGuid(),
+                                        Value = "Yes",
+                                        Order = 1
+                                    },
+                                    new Option {
+                                        Id = Guid.NewGuid(),
+                                        Value = "No",
+                                        Order = 2
+                                    },
                                 },
                                 Order = 3,
                             },
@@ -86,10 +107,21 @@ namespace DataDrivenFormPoC.Brokers
                                 QuestionText = "Question 4",
                                 ResponseType = ResponseType.MultipleChoice,
                                 Options = {
-                                    new Option{ Id = Guid.NewGuid(), Value = "Pepperoni"},
-                                    new Option{ Id = Guid.NewGuid(), Value = "Sausage"},
-                                    new Option{ Id = Guid.NewGuid(), Value = "Chicken"},
-                                    new Option{ Id = Guid.NewGuid(), Value = "Mushrooms"},
+                                    new Option {
+                                        Id = Guid.NewGuid(),
+                                        Value = "Pepperoni",
+                                        Order = 1
+                                    },
+                                    new Option {
+                                        Id = Guid.NewGuid(),
+                                        Value = "Sausage",
+                                        Order = 2
+                                    },
+                                    new Option {
+                                        Id = Guid.NewGuid(),
+                                        Value = "Chicken",
+                                        Order = 3
+                                    },
                                 },
                                 Order = 4,
                             },
@@ -100,7 +132,7 @@ namespace DataDrivenFormPoC.Brokers
                                 QuestionText = "Question 5",
                                 ResponseType = ResponseType.Date,
                                 Options = {
-                                    new Option{ Id = Guid.NewGuid() },
+                                    new Option{ Id = Guid.NewGuid(), Order = 1 },
                                 },
                                 Order = 5,
                             },
@@ -117,6 +149,23 @@ namespace DataDrivenFormPoC.Brokers
             optionsBuilder.UseSqlServer(connectionString);
         }
 
-        public IQueryable<Form> SelectAllForms() => this.Forms.AsQueryable();
+        public async ValueTask<IQueryable<Form>> SelectAllForms()
+        {
+            var form = this.Forms
+                .Include(form => form.Questions.OrderBy(question => question.Order))
+                .ThenInclude(question => question.Options.OrderBy(option => option.Order));
+
+            return form;
+        }
+
+        public async ValueTask<Form> SelectForm(Guid debugFormId)
+        {
+            var form = this.Forms
+                .Include(form => form.Questions.OrderBy(question => question.Order))
+                .ThenInclude(question => question.Options.OrderBy(option => option.Order))
+                .Single(form => form.Id == debugFormId);
+
+            return form;
+        }
     }
 }

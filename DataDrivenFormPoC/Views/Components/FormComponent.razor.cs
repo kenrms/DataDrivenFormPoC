@@ -22,7 +22,7 @@ namespace DataDrivenFormPoC.Views.Components
 
         protected async override Task OnInitializedAsync()
         {
-            this.Form = (await FormService.RetrieveAllFormsAsync()).First();
+            this.Form = await this.FormService.RetrieveDebugFormAsync();
             this.OptionResponders = new List<IOptionResponder>();
             this.State = ComponentState.Content;
         }
