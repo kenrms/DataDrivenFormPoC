@@ -3,30 +3,21 @@ using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace DataDrivenFormPoC.Views.Components
 {
-    public partial class TextQuestionComponent : ComponentBase, IOptionResponder
+    public partial class TextQuestionComponent : ComponentBase
     {
         [Parameter]
         public Question Question { get; set; }
 
         [Parameter]
-        public EventCallback<IOptionResponder> Callback { get; set; }
-
-        [Parameter]
         public List<OptionResponse> Responses { get; set; }
 
-        protected Guid GetOptionId() => Question.Options.First().Id;
-
-        protected async override Task OnInitializedAsync() =>
-            await this.Callback.InvokeAsync(this);
+        protected Guid GetOptionId() =>
+            Question.Options.First().Id;
 
         public OptionResponse GetOptionResponse() =>
-            Responses.Single();
-
-        public IList<OptionResponse> GetOptionResponses() =>
-            this.Responses;
+            this.Responses.Single();
     }
 }
