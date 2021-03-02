@@ -38,19 +38,23 @@ namespace DataDrivenFormPoC.Views.Components
 
         public IList<OptionResponse> GetOptionResponses()
         {
-            var optionResponses = new List<OptionResponse>();
+            OptionResponse optionResponse;
 
-            var optionResponse = new OptionResponse
+            if (this.Responses.Any())
             {
-                Question = Question,
-                Option = Question.Options.First(),
-            };
+                optionResponse = this.Responses.Single();
+            }
+            else
+            {
+                optionResponse = new OptionResponse();
+                this.Responses.Add(optionResponse);
+            }
 
+            optionResponse.Question = Question;
+            optionResponse.Option = Question.Options.First();
             optionResponse.TextValue = TextInput;
 
-            optionResponses.Add(optionResponse);
-
-            return optionResponses;
+            return this.Responses;
         }
     }
 }

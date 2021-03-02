@@ -1,13 +1,18 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Drawing;
 
 namespace DataDrivenFormPoC.Models
 {
     public class OptionResponse
     {
+        [Key, Column(Order = 0)]
         public Guid Id { get; set; }
-        public FormResponse FormResponse { get; set; }
-        public User FilledBy { get; set; }
+        [Key, Column(Order = 1)]
         public Question Question { get; set; }
+        [Key, Column(Order = 2)]
+        public User FilledBy { get; set; }
         public Option Option { get; set; }
 
         public bool IsChecked { get; set; }

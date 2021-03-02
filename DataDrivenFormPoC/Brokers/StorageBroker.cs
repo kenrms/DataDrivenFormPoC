@@ -59,7 +59,9 @@ namespace DataDrivenFormPoC.Brokers
         public async ValueTask<bool> AddOrUpdateFormResponseAsync(FormResponse submittedFormResponse)
         {
             var existingFormResponse = await this.FormResponses
-                .SingleOrDefaultAsync(formResponse => formResponse.Id == submittedFormResponse.Id);
+                .SingleOrDefaultAsync(formResponse =>
+                    formResponse.Form.Id == submittedFormResponse.Form.Id &&
+                    formResponse.FilledBy.Id == submittedFormResponse.FilledBy.Id);
 
             if (existingFormResponse == null)
             {
@@ -67,7 +69,14 @@ namespace DataDrivenFormPoC.Brokers
             }
             else
             {
-                this.FormResponses.Update(submittedFormResponse);
+                existingFormResponse.OptionResponses = submittedFormResponse.OptionResponses;
+                existingFormResponse.DateSubmitted = submittedFormResponse.DateSubmitted;
+                existingFormResponse.FilledBy = submittedFormResponse.FilledBy;
+                existingFormResponse.Form = submittedFormResponse.Form;
+
+                this.OptionResponses.UpdateRange(submittedFormResponse.OptionResponses);
+
+                this.FormResponses.Update(existingFormResponse);
             }
 
             await this.SaveChangesAsync();
