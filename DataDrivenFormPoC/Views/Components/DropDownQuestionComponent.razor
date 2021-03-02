@@ -2,7 +2,7 @@
 
 <br />
 
-<select @onchange="SelectionChanged">
+<select @onchange="SelectionChanged" value="@SelectedOptionId">
     @foreach (var option in Question.Options)
     {
         <option value="@option.Id" id="@option.Id">@option.Value</option>
