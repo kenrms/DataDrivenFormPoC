@@ -3,13 +3,13 @@
     public enum ResponseType
     {
         RawText,
-        RawTextArea,
+        //RawTextArea,
         SingleChoiceRadio,
         SingleChoiceDropDown,
         MultipleChoice,
         Date,
-        DateTime,
-        Number,
-        Blob
+        //DateTime,
+        //Number,
+        //Blob
     }
 }

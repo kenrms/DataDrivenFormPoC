@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Tynamix.ObjectFiller;
 
 namespace DataDrivenFormPoC.Services
 {
@@ -95,10 +96,10 @@ namespace DataDrivenFormPoC.Services
                     }
             };
 
-            this.debugFormId = form.Id;
-
             return form;
         }
+
+        private Form GenerateDebugFormFromFiller() => CreateFormFiller(100).Create();
 
         public async ValueTask<List<Form>> RetrieveAllFormsAsync()
         {
@@ -130,6 +131,16 @@ namespace DataDrivenFormPoC.Services
             this.debugFormResponse = formResponse;
 
             return true;
+        }
+
+        public Filler<Form> CreateFormFiller(int numberOfQuestions)
+        {
+            var filler = new Filler<Form>();
+
+            filler.Setup()
+                .ListItemCount(numberOfQuestions);
+
+            return filler;
         }
     }
 }
