@@ -1,11 +1,9 @@
-﻿using DataDrivenFormPoC.Brokers;
-using DataDrivenFormPoC.Models;
+﻿using DataDrivenFormPoC.Models;
 using DataDrivenFormPoC.Models.ContainerComponents;
 using DataDrivenFormPoC.Services;
 using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace DataDrivenFormPoC.Views.Components
@@ -17,12 +15,17 @@ namespace DataDrivenFormPoC.Views.Components
 
         public ComponentState State { get; set; }
         public Form Form { get; set; }
+        public FormResponse FormResponse { get; set; }
+        public User CurrentUser { get; set; }
 
         public List<IOptionResponder> OptionResponders { get; set; }
 
         protected async override Task OnInitializedAsync()
         {
+            this.CurrentUser = await this.FormService.RetrieveDebugUserAsync();
             this.Form = await this.FormService.RetrieveDebugFormAsync();
+            this.FormResponse = await this.FormService.RetrieveFormResponseForDebugFormAndUserAsync();
+
             this.OptionResponders = new List<IOptionResponder>();
             this.State = ComponentState.Content;
         }
@@ -36,18 +39,17 @@ namespace DataDrivenFormPoC.Views.Components
 
             var formResponse = new FormResponse
             {
+                FilledBy = this.CurrentUser,
                 DateSubmitted = DateTimeOffset.Now,
                 Form = this.Form,
-                Id = new Guid(),
                 OptionResponses = optionResponses,
             };
 
-            bool success = await this.FormService.SubmitFormResponse(formResponse);
+            bool success = await this.FormService.SubmitFormResponseAsync(formResponse);
             if (success)
             {
-                var responses = await this.FormService.RetrieveOptionResponsesForDebugForm();
-                // TODO populate UI with responses
-
+                this.FormResponse = await this.FormService
+                    .RetrieveFormResponseForDebugFormAndUserAsync();
             }
         }
 
