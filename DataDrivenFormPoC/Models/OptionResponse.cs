@@ -1,7 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Drawing;
 
 namespace DataDrivenFormPoC.Models
 {
@@ -15,6 +14,8 @@ namespace DataDrivenFormPoC.Models
         public Option Option { get; set; }
 
         public bool IsChecked { get; set; }
+        [Required]
+        [StringLength(10, ErrorMessage = "Too long!")]
         public string TextValue { get; set; }
         public decimal NumericValue { get; set; }
         public DateTimeOffset DateTimeValue { get; set; }

@@ -3,6 +3,9 @@
 <ContainerComponent State=State>
     <Content>
         <EditForm Model=FormResponse OnValidSubmit=HandleValidSubmit>
+            <ObjectGraphDataAnnotationsValidator />
+            <DataAnnotationsValidator />
+            <ValidationSummary />
 
             @foreach (var (question, index) in Form.Questions.Select((question, i) => (question, ++i)))
             {
