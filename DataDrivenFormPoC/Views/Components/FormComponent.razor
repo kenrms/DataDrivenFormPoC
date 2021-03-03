@@ -3,43 +3,16 @@
 <ContainerComponent State="State">
     <Content>
         <form @onsubmit="HandleSubmit">
+
             @foreach (var question in Form.Questions)
-{               <div id="@question.Id">
 
-                    @switch (GetQuestionResponseType(question))
-                    {
-                        case Models.ResponseType.RawText:
-                            <TextQuestionComponent Question="@question"
-                                                   Responses="QuestionOptionResponsesMap[question.Id]" />
-                            break;
-
-                        case Models.ResponseType.SingleChoiceDropDown:
-                            <DropDownQuestionComponent Question="@question" 
-                                                       Responses="QuestionOptionResponsesMap[question.Id]" />
-                            break;
-                        case Models.ResponseType.SingleChoiceRadio:
-                            <RadioQuestionComponent Question="@question" 
-                                                    Responses="QuestionOptionResponsesMap[question.Id]" />
-                            break;
-                        case Models.ResponseType.MultipleChoice:
-                            <CheckBoxQuestionComponent Question="@question"
-                                                       Responses="QuestionOptionResponsesMap[question.Id]" />
-                            break;
-                        case Models.ResponseType.Date:
-                            <DateQuestionComponent Question="@question"
-                                                   Responses="QuestionOptionResponsesMap[question.Id]" />
-                            break;
-                        default:
-                            <p>
-                                Unknown Question Type: @question.ResponseType in Question @question.Id
-                            </p>
-                            break;
-                    }
-
-                </div>
+{               <QuestionComponent Question=@question 
+                                   Responses=@QuestionOptionResponsesMap[question.Id]/>
 
                 <br />
+                <br />
             }
+
             <br />
             <input type="submit" value="Submit" />
         </form>

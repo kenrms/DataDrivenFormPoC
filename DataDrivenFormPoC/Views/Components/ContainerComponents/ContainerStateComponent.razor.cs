@@ -8,7 +8,6 @@ namespace DataDrivenFormPoC.Views.Components.ContainerComponents
         [Parameter]
         public ComponentState State { get; set; }
 
-
         [Parameter]
         public RenderFragment LoadingFragment { get; set; }
 

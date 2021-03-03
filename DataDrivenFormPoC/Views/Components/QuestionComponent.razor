@@ -1,0 +1,22 @@
+﻿<DynamicQuestionComponent Question=Question Responses=Responses>
+    <TextQuestionFragment>
+        <TextQuestionComponent Question=Question Responses=Responses />
+    </TextQuestionFragment>
+    <DropDownQuestionFragment>
+        <DropDownQuestionComponent Question=Question Responses=Responses />
+    </DropDownQuestionFragment>
+    <RadioQuestionFragment>
+        <RadioQuestionComponent Question=Question Responses=Responses />
+    </RadioQuestionFragment>
+    <CheckBoxQuestionFragment>
+        <CheckBoxQuestionComponent Question=Question Responses=Responses />
+    </CheckBoxQuestionFragment>
+    <DateQuestionFragment>
+        <DateQuestionComponent Question=Question Responses=Responses />
+    </DateQuestionFragment>
+    <UnknownQuestionFragment>
+        <p>
+            Unknown question type in question: @Question.Id
+        </p>
+    </UnknownQuestionFragment>
+</DynamicQuestionComponent>
