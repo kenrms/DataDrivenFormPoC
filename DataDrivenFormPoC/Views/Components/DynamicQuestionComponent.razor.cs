@@ -11,6 +11,9 @@ namespace DataDrivenFormPoC.Views.Components
         [Parameter]
         public List<OptionResponse> Responses { get; set; }
         [Parameter]
+        public List<ValidationRule> ValidationRules { get; set; }
+
+        [Parameter]
         public RenderFragment TextQuestionFragment { get; set; }
         [Parameter]
         public RenderFragment TextAreaQuestionFragment { get; set; }

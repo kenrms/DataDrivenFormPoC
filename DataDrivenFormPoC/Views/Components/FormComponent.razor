@@ -2,14 +2,15 @@
 
 <ContainerComponent State=State>
     <Content>
-        <EditForm Model=FormResponse OnValidSubmit=HandleValidSubmit>
+        <EditForm EditContext=FormEditContext
+                  OnSubmit=HandleSubmit>
+
             <ObjectGraphDataAnnotationsValidator />
             <DataAnnotationsValidator />
-            <ValidationSummary />
 
-            @foreach (var (question, index) in Form.Questions.Select((question, i) => (question, ++i)))
+            @foreach (var (question, questionNumber) in Form.Questions.Select((question, i) => (question, ++i)))
             {
-                <QuestionComponent QuestionNumber=index
+                <QuestionComponent QuestionNumber=questionNumber
                                    Question=@question
                                    Responses=@QuestionOptionResponsesMap[question.Id] />
 
@@ -19,6 +20,9 @@
 
             <br />
             <input type="submit" value="Submit" />
+
+            <ValidationSummary />
+
         </EditForm>
     </Content>
 </ContainerComponent>

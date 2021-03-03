@@ -2,6 +2,7 @@
 using DataDrivenFormPoC.Models.ContainerComponents;
 using DataDrivenFormPoC.Services;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Forms;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,11 +14,16 @@ namespace DataDrivenFormPoC.Views.Components
     {
         [Inject]
         public IFormService FormService { get; set; }
+        [Inject]
+        public IValidationRuleService ValidationRuleService { get; set; }
         public ComponentState State { get; set; }
         public Form Form { get; set; }
         public FormResponse FormResponse { get; set; }
         public User CurrentUser { get; set; }
         public Dictionary<Guid, List<OptionResponse>> QuestionOptionResponsesMap;
+        public Dictionary<Guid, List<ValidationRule>> QuestionValidationRulesMap;
+
+        private EditContext FormEditContext { get; set; }
 
         protected async override Task OnInitializedAsync()
         {
@@ -26,6 +32,7 @@ namespace DataDrivenFormPoC.Views.Components
             this.FormResponse = await this.FormService.RetrieveFormResponseForDebugFormAndUserAsync();
             InitializeQuestionOptionResponseMap();
             InitializeFormResponse();
+            this.FormEditContext = new EditContext(this.FormResponse);
             this.State = ComponentState.Content;
         }
 
@@ -72,8 +79,26 @@ namespace DataDrivenFormPoC.Views.Components
             }
         }
 
-        public async void HandleValidSubmit()
+        public async void HandleSubmit()
         {
+            bool formIsValid = true;
+
+            // TODO validation bonanza; not a fan of this -- how to show errors in UI?
+            foreach (var q in Form.Questions)
+            {
+                foreach (var qvr in q.QuestionValidationRules)
+                {
+                    var validator = this.ValidationRuleService
+                        .GetResponseValidator(qvr.ValidationRule);
+
+                    formIsValid = formIsValid &&
+                        validator.Validate(QuestionOptionResponsesMap[q.Id]);
+                }
+            }
+
+            // this shouldn't actually do anything yet
+            this.FormEditContext.Validate();
+
             this.FormResponse.DateSubmitted = DateTimeOffset.Now;
 
             bool success = await this.FormService.SubmitFormResponseAsync(this.FormResponse);

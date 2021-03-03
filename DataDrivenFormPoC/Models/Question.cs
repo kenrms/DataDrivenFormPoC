@@ -12,10 +12,12 @@ namespace DataDrivenFormPoC.Models
         public int Order { get; set; }
         public Form Form { get; set; }
         public IList<Option> Options { get; set; }
+        public IList<QuestionValidationRule> QuestionValidationRules { get; set; }
 
         public Question()
         {
             this.Options = new List<Option>();
+            this.QuestionValidationRules = new List<QuestionValidationRule>();
         }
     }
 }

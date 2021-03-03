@@ -50,7 +50,9 @@ namespace DataDrivenFormPoC.Brokers
         {
             var form = this.Forms
                 .Include(form => form.Questions.OrderBy(question => question.Order))
-                .ThenInclude(question => question.Options.OrderBy(option => option.Order))
+                    .ThenInclude(question => question.Options.OrderBy(option => option.Order))
+                .Include(form => form.Questions.OrderBy(question => question.Order))
+                    .ThenInclude(question => question.QuestionValidationRules)
                 .SingleOrDefaultAsync(form => form.Id == formId);
 
             return await form;
@@ -151,6 +153,14 @@ namespace DataDrivenFormPoC.Brokers
                                 Options = {
                                     new Option{ Id = Guid.NewGuid(), Order = 1 }
                                 },
+                                QuestionValidationRules = new List<QuestionValidationRule>
+                                {
+                                    new QuestionValidationRule
+                                    {
+                                        Id = Guid.NewGuid(),
+                                        ValidationRule= ValidationRule.TextNotNullOrWhitespace
+                                    },
+                                },
                                 Order = 1,
                             },
                             new Question
@@ -236,6 +246,14 @@ namespace DataDrivenFormPoC.Brokers
                                 ResponseType = ResponseType.Date,
                                 Options = {
                                     new Option{ Id = Guid.NewGuid(), Order = 1 },
+                                },
+                                QuestionValidationRules = new List<QuestionValidationRule>
+                                {
+                                    new QuestionValidationRule
+                                    {
+                                        Id = Guid.NewGuid(),
+                                        ValidationRule= ValidationRule.DateNotDefault
+                                    },
                                 },
                                 Order = 5,
                             },

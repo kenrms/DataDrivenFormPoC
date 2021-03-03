@@ -24,6 +24,7 @@ namespace DataDrivenFormPoC
             services.AddDbContext<StorageBroker>();
             services.AddScoped<IStorageBroker, StorageBroker>();
             services.AddTransient<IFormService, FormService>();
+            services.AddTransient<IValidationRuleService, ValidationRuleService>();
 
             services.AddRazorPages(options =>
             {
