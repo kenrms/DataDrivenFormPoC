@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Components;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace DataDrivenFormPoC.Views.Components
 {
@@ -10,8 +9,6 @@ namespace DataDrivenFormPoC.Views.Components
     {
         [Parameter]
         public Question Question { get; set; }
-        [Parameter]
-        public EventCallback<IOptionResponder> Callback { get; set; }
         [Parameter]
         public List<OptionResponse> Responses { get; set; }
 

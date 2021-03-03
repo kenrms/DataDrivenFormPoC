@@ -11,8 +11,6 @@ namespace DataDrivenFormPoC.Views.Components
         [Parameter]
         public Question Question { get; set; }
         [Parameter]
-        public EventCallback<IOptionResponder> Callback { get; set; }
-        [Parameter]
         public List<OptionResponse> Responses { get; set; }
 
         protected Guid GetOptionId() =>
