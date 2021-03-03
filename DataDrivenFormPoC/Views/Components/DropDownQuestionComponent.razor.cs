@@ -14,15 +14,13 @@ namespace DataDrivenFormPoC.Views.Components
         public List<OptionResponse> Responses { get; set; }
         public Guid SelectedOptionId { get; set; }
 
-        protected override void OnInitialized()
-        {
+        protected override void OnInitialized() =>
             InitializeSelectedOption();
-        }
 
         private void InitializeSelectedOption()
         {
             OptionResponse existingSelection = this.Responses
-                            .SingleOrDefault(optionResponse => optionResponse.IsChecked);
+                .SingleOrDefault(optionResponse => optionResponse.IsChecked);
 
             this.SelectedOptionId = existingSelection != null ?
                 existingSelection.Option.Id :

@@ -1,49 +1,41 @@
 ﻿using DataDrivenFormPoC.Models;
 using Microsoft.AspNetCore.Components;
+using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
+using System.Linq;
 
 namespace DataDrivenFormPoC.Views.Components
 {
-    public partial class RadioQuestionComponent : ComponentBase, IOptionResponder
+    public partial class RadioQuestionComponent : ComponentBase
     {
         [Parameter]
         public Question Question { get; set; }
-
-        [Parameter]
-        public EventCallback<IOptionResponder> Callback { get; set; }
-
         [Parameter]
         public List<OptionResponse> Responses { get; set; }
+        public Guid SelectedOptionId { get; set; }
 
-        public string SelectedOptionId { get; set; }
+        protected override void OnInitialized() =>
+            InitializeSelectedOption();
 
-        void SelectionChanged(ChangeEventArgs args) =>
-            this.SelectedOptionId = args.Value.ToString();
-
-        protected async override Task OnInitializedAsync()
+        private void InitializeSelectedOption()
         {
-            await this.Callback.InvokeAsync(this);
+            OptionResponse existingSelection = this.Responses
+                .SingleOrDefault(optionResponse => optionResponse.IsChecked);
+
+            this.SelectedOptionId = existingSelection != null ?
+                existingSelection.Option.Id :
+                this.Question.Options.First().Id;
         }
 
-        public IList<OptionResponse> GetOptionResponses()
+        void SelectionChanged(ChangeEventArgs args)
         {
-            var optionResponses = new List<OptionResponse>();
+            this.SelectedOptionId = new Guid(args.Value.ToString());
 
-            foreach (var option in this.Question.Options)
+            foreach (var optionResponse in this.Responses)
             {
-                var optionResponse = new OptionResponse
-                {
-                    Question = Question,
-                    Option = option,
-                };
-
-                optionResponse.IsChecked = SelectedOptionId == option.Id.ToString();
-
-                optionResponses.Add(optionResponse);
+                optionResponse.IsChecked =
+                    optionResponse.Option.Id == this.SelectedOptionId;
             }
-
-            return optionResponses;
         }
     }
 }
