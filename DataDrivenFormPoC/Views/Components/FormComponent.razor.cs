@@ -25,7 +25,21 @@ namespace DataDrivenFormPoC.Views.Components
             this.Form = await this.FormService.RetrieveDebugFormAsync();
             this.FormResponse = await this.FormService.RetrieveFormResponseForDebugFormAndUserAsync();
             InitializeQuestionOptionResponseMap();
+            InitializeFormResponse();
             this.State = ComponentState.Content;
+        }
+
+        private void InitializeFormResponse()
+        {
+            if (this.FormResponse == null)
+            {
+                this.FormResponse = new FormResponse
+                {
+                    FilledBy = this.CurrentUser,
+                    Form = this.Form,
+                    OptionResponses = GetOptionResponses(),
+                };
+            }
         }
 
         private void InitializeQuestionOptionResponseMap()
@@ -58,27 +72,11 @@ namespace DataDrivenFormPoC.Views.Components
             }
         }
 
-        public ResponseType GetQuestionResponseType(Question question) =>
-            question.ResponseType;
-
-        public async void HandleSubmit()
+        public async void HandleValidSubmit()
         {
-            List<OptionResponse> optionResponses = GetOptionResponses();
+            this.FormResponse.DateSubmitted = DateTimeOffset.Now;
 
-            var formResponse = new FormResponse
-            {
-                FilledBy = this.CurrentUser,
-                DateSubmitted = DateTimeOffset.Now,
-                Form = this.Form,
-                OptionResponses = optionResponses,
-            };
-
-            bool success = await this.FormService.SubmitFormResponseAsync(formResponse);
-            if (success)
-            {
-                this.FormResponse = await this.FormService
-                    .RetrieveFormResponseForDebugFormAndUserAsync();
-            }
+            bool success = await this.FormService.SubmitFormResponseAsync(this.FormResponse);
         }
 
         private List<OptionResponse> GetOptionResponses() =>

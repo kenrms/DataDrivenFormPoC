@@ -1,7 +1,4 @@
-﻿<label> @Question.QuestionText</label>
-<br />
-
-@foreach (var option in Question.Options)
+﻿@foreach (var (option, index) in Question.Options.Select((option, i) => (option, i)))
 {
     <label for="@option.Id">
 
@@ -9,12 +6,15 @@
                id="@option.Id"
                name="@Question.Id"
                value="@option.Id"
-               @onchange="SelectionChanged" 
+               @onchange="SelectionChanged"
                checked=@(SelectedOptionId == option.Id) />
 
         @option.Value
 
     </label>
 
-    <br />
+    @if (index != Question.Options.Count() - 1)
+    {
+        <br />
+    }
 }

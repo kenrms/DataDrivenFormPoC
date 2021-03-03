@@ -1,4 +1,7 @@
-﻿<DynamicQuestionComponent Question=Question Responses=Responses>
+﻿<label>@QuestionNumber. @Question.QuestionText</label>
+<br />
+
+<DynamicQuestionComponent Question=Question Responses=Responses>
     <TextQuestionFragment>
         <TextQuestionComponent Question=Question Responses=Responses />
     </TextQuestionFragment>
@@ -16,7 +19,7 @@
     </DateQuestionFragment>
     <UnknownQuestionFragment>
         <p>
-            Unknown question type in question: @Question.Id
+            Unknown/unimplemented question type in question: @Question.Id
         </p>
     </UnknownQuestionFragment>
 </DynamicQuestionComponent>

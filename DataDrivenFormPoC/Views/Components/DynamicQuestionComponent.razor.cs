@@ -13,6 +13,8 @@ namespace DataDrivenFormPoC.Views.Components
         [Parameter]
         public RenderFragment TextQuestionFragment { get; set; }
         [Parameter]
+        public RenderFragment TextAreaQuestionFragment { get; set; }
+        [Parameter]
         public RenderFragment DropDownQuestionFragment { get; set; }
         [Parameter]
         public RenderFragment RadioQuestionFragment { get; set; }
@@ -20,6 +22,8 @@ namespace DataDrivenFormPoC.Views.Components
         public RenderFragment CheckBoxQuestionFragment { get; set; }
         [Parameter]
         public RenderFragment DateQuestionFragment { get; set; }
+        [Parameter]
+        public RenderFragment DateTimeQuestionFragment { get; set; }
         [Parameter]
         public RenderFragment UnknownQuestionFragment { get; set; }
 

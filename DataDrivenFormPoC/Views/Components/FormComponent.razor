@@ -1,13 +1,14 @@
 ﻿@using DataDrivenFormPoC.Views.Components.ContainerComponents;
 
-<ContainerComponent State="State">
+<ContainerComponent State=State>
     <Content>
-        <form @onsubmit="HandleSubmit">
+        <EditForm Model=FormResponse OnValidSubmit=HandleValidSubmit>
 
-            @foreach (var question in Form.Questions)
-
-{               <QuestionComponent Question=@question 
-                                   Responses=@QuestionOptionResponsesMap[question.Id]/>
+            @foreach (var (question, index) in Form.Questions.Select((question, i) => (question, ++i)))
+            {
+                <QuestionComponent QuestionNumber=index
+                                   Question=@question
+                                   Responses=@QuestionOptionResponsesMap[question.Id] />
 
                 <br />
                 <br />
@@ -15,6 +16,6 @@
 
             <br />
             <input type="submit" value="Submit" />
-        </form>
+        </EditForm>
     </Content>
 </ContainerComponent>

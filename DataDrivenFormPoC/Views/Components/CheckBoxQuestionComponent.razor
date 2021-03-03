@@ -1,7 +1,4 @@
-﻿<label> @Question.QuestionText</label>
-<br />
-
-@foreach (var (option, index) in Question.Options.Select((option, i) => (option, i)))
+﻿@foreach (var (option, index) in Question.Options.Select((option, i) => (option, i)))
 {
     <input type="checkbox"
            id="@option.Id"
