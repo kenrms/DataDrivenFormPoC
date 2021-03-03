@@ -13,12 +13,11 @@ namespace DataDrivenFormPoC.Views.Components
     {
         [Inject]
         public IFormService FormService { get; set; }
-
         public ComponentState State { get; set; }
         public Form Form { get; set; }
         public FormResponse FormResponse { get; set; }
-        public Dictionary<Guid, List<OptionResponse>> QuestionOptionResponseMap;
         public User CurrentUser { get; set; }
+        public Dictionary<Guid, List<OptionResponse>> QuestionOptionResponsesMap;
 
         protected async override Task OnInitializedAsync()
         {
@@ -26,17 +25,16 @@ namespace DataDrivenFormPoC.Views.Components
             this.Form = await this.FormService.RetrieveDebugFormAsync();
             this.FormResponse = await this.FormService.RetrieveFormResponseForDebugFormAndUserAsync();
             InitializeQuestionOptionResponseMap();
-
             this.State = ComponentState.Content;
         }
 
         private void InitializeQuestionOptionResponseMap()
         {
-            this.QuestionOptionResponseMap = new Dictionary<Guid, List<OptionResponse>>();
+            this.QuestionOptionResponsesMap = new Dictionary<Guid, List<OptionResponse>>();
 
             if (this.FormResponse != null)
             {
-                this.QuestionOptionResponseMap = this.FormResponse.OptionResponses
+                this.QuestionOptionResponsesMap = this.FormResponse.OptionResponses
                     .GroupBy(optionResponse => optionResponse.Question.Id)
                     .ToDictionary(group => group.Key, group => group.ToList());
             }
@@ -44,7 +42,7 @@ namespace DataDrivenFormPoC.Views.Components
             {
                 foreach (var question in this.Form.Questions)
                 {
-                    this.QuestionOptionResponseMap[question.Id] = new List<OptionResponse>();
+                    this.QuestionOptionResponsesMap[question.Id] = new List<OptionResponse>();
 
                     foreach (var option in question.Options)
                     {
@@ -54,13 +52,13 @@ namespace DataDrivenFormPoC.Views.Components
                             Question = question,
                         };
 
-                        this.QuestionOptionResponseMap[question.Id].Add(optionResponse);
+                        this.QuestionOptionResponsesMap[question.Id].Add(optionResponse);
                     }
                 }
             }
         }
 
-        public ResponseType GetType(Question question) =>
+        public ResponseType GetQuestionResponseType(Question question) =>
             question.ResponseType;
 
         public async void HandleSubmit()
@@ -84,7 +82,7 @@ namespace DataDrivenFormPoC.Views.Components
         }
 
         private List<OptionResponse> GetOptionResponses() =>
-            this.QuestionOptionResponseMap
+            this.QuestionOptionResponsesMap
                 .SelectMany(optionResponses => optionResponses.Value)
                 .ToList();
     }

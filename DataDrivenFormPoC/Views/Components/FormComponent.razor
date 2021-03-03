@@ -6,28 +6,28 @@
             @foreach (var question in Form.Questions)
 {               <div id="@question.Id">
 
-                    @switch (GetType(question))
+                    @switch (GetQuestionResponseType(question))
                     {
                         case Models.ResponseType.RawText:
                             <TextQuestionComponent Question="@question"
-                                                   Responses="QuestionOptionResponseMap[question.Id]" />
+                                                   Responses="QuestionOptionResponsesMap[question.Id]" />
                             break;
 
                         case Models.ResponseType.SingleChoiceDropDown:
                             <DropDownQuestionComponent Question="@question" 
-                                                       Responses="QuestionOptionResponseMap[question.Id]" />
+                                                       Responses="QuestionOptionResponsesMap[question.Id]" />
                             break;
                         case Models.ResponseType.SingleChoiceRadio:
                             <RadioQuestionComponent Question="@question" 
-                                                    Responses="QuestionOptionResponseMap[question.Id]" />
+                                                    Responses="QuestionOptionResponsesMap[question.Id]" />
                             break;
                         case Models.ResponseType.MultipleChoice:
                             <CheckBoxQuestionComponent Question="@question"
-                                                       Responses="QuestionOptionResponseMap[question.Id]" />
+                                                       Responses="QuestionOptionResponsesMap[question.Id]" />
                             break;
                         case Models.ResponseType.Date:
                             <DateQuestionComponent Question="@question"
-                                                   Responses="QuestionOptionResponseMap[question.Id]" />
+                                                   Responses="QuestionOptionResponsesMap[question.Id]" />
                             break;
                         default:
                             <p>
