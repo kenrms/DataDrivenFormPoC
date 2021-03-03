@@ -12,7 +12,6 @@ namespace DataDrivenFormPoC.Models
         [Key, Column(Order = 1)]
         public Question Question { get; set; }
         [Key, Column(Order = 2)]
-        public User FilledBy { get; set; }
         public Option Option { get; set; }
 
         public bool IsChecked { get; set; }
