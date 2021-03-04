@@ -1,1 +1,13 @@
 ﻿@GetQuestionFragmentToRender()
+
+@foreach (var childForm in Question.Options.Select(option => option.ChildForm))
+{
+    @if (childForm != null)
+    {
+        <FormQuestionsListComponent IsHidden=ShouldHideQuestionList(childForm)
+                                    Questions=childForm.Questions.ToList()
+                                    ResponsesMap=ResponsesMap
+                                    ValidationMessagesMap=ValidationMessagesMap />
+    }
+
+}

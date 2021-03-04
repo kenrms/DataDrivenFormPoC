@@ -6,13 +6,9 @@
                   OnSubmit=HandleSubmit>
 
 
-            @foreach (var (question, questionNumber) in Form.Questions.Select((question, i) => (question, ++i)))
-            {
-                <QuestionComponent QuestionNumber=questionNumber
-                                   Question=question
-                                   Responses=QuestionOptionResponsesMap[question.Id]
-                                   ValidationMessages=QuestionValidationMessagesMap[question.Id] />
-            }
+            <FormQuestionsListComponent Questions=Form.Questions.ToList()
+                                        ResponsesMap=QuestionOptionResponsesMap
+                                        ValidationMessagesMap=QuestionValidationMessagesMap />
 
             <br />
             <input type="submit" value="Submit" />

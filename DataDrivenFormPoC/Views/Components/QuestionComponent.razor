@@ -1,21 +1,30 @@
 ﻿<div class="question" id=@Question.Id>
 
-    <label>@QuestionNumber. @Question.QuestionText</label>
+    <label>@Question.QuestionText</label>
     <br />
 
-    <DynamicQuestionComponent Question=Question Responses=Responses>
+    <DynamicQuestionComponent Question=Question
+                              Responses=Responses
+                              ResponsesMap=ResponsesMap
+                              ValidationMessagesMap=ValidationMessagesMap>
+
         <TextQuestionFragment>
             <TextQuestionComponent Question=Question
                                    Responses=Responses />
         </TextQuestionFragment>
         <DropDownQuestionFragment>
-            <DropDownQuestionComponent Question=Question Responses=Responses />
+            <DropDownQuestionComponent Question=Question
+                                       Responses=Responses
+                                       RefreshQuestionList=RefreshQuestionList />
         </DropDownQuestionFragment>
         <RadioQuestionFragment>
-            <RadioQuestionComponent Question=Question Responses=Responses />
+            <RadioQuestionComponent Question=Question
+                                    Responses=Responses
+                                    RefreshQuestionList=RefreshQuestionList />
         </RadioQuestionFragment>
         <CheckBoxQuestionFragment>
-            <CheckBoxQuestionComponent Question=Question Responses=Responses />
+            <CheckBoxQuestionComponent Question=Question
+                                       Responses=Responses />
         </CheckBoxQuestionFragment>
         <DateQuestionFragment>
             <DateQuestionComponent Question=Question Responses=Responses />
@@ -25,6 +34,7 @@
                 Unknown/unimplemented question type in question: @Question.Id
             </p>
         </UnknownQuestionFragment>
+
     </DynamicQuestionComponent>
 
     @foreach (var validationMessage in ValidationMessages)

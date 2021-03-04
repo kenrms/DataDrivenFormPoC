@@ -13,6 +13,8 @@ namespace DataDrivenFormPoC.Views.Components
         public List<OptionResponse> Responses { get; set; }
 
         public OptionResponse GetOptionResponse(Option option) =>
-            this.Responses.Single(optionResponse => optionResponse.Option.Id == option.Id);
+            this.Responses.Single(optionResponse =>
+                optionResponse.Option.Question.Id == Question.Id &&
+                optionResponse.Option.Id == option.Id);
     }
 }

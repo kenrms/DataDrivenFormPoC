@@ -1,0 +1,11 @@
+﻿<div hidden="@IsHidden">
+    @foreach (var question in Questions)
+    {
+        <QuestionComponent Question=question
+                           Responses=ResponsesMap[question.Id]
+                           ValidationMessages=ValidationMessagesMap[question.Id]
+                           ResponsesMap=ResponsesMap
+                           ValidationMessagesMap=ValidationMessagesMap
+                           RefreshQuestionList=RefreshQuestionList/>
+    }
+</div>

@@ -51,6 +51,14 @@ namespace DataDrivenFormPoC.Brokers
             var form = this.Forms
                 .Include(form => form.Questions.OrderBy(question => question.Order))
                     .ThenInclude(question => question.Options.OrderBy(option => option.Order))
+                        .ThenInclude(option => option.ChildForm)
+                            .ThenInclude(childForm => childForm.Questions.OrderBy(question => question.Order))
+                                .ThenInclude(questions => questions.Options.OrderBy(option => option.Order))
+                .Include(form => form.Questions.OrderBy(question => question.Order))
+                    .ThenInclude(question => question.Options.OrderBy(option => option.Order))
+                        .ThenInclude(option => option.ChildForm)
+                            .ThenInclude(childForm => childForm.Questions.OrderBy(question => question.Order))
+                                .ThenInclude(questions => questions.QuestionValidationRules)
                 .Include(form => form.Questions.OrderBy(question => question.Order))
                     .ThenInclude(question => question.QuestionValidationRules)
                 .SingleOrDefaultAsync(form => form.Id == formId);
@@ -88,12 +96,12 @@ namespace DataDrivenFormPoC.Brokers
 
         public async ValueTask<FormResponse> SelectFormResponseAsync(Guid userId, Guid formId)
         {
-            var formResponse = this.FormResponses
+            FormResponse formResponse = await this.FormResponses
                 .Include(formResponse => formResponse.OptionResponses)
                 .SingleOrDefaultAsync(formResponse =>
                     formResponse.FilledBy.Id == userId && formResponse.Form.Id == formId);
 
-            return await formResponse;
+            return formResponse;
         }
 
         public async ValueTask<User> SelectUserAsync(Guid userId) =>
@@ -147,7 +155,6 @@ namespace DataDrivenFormPoC.Brokers
                             new Question
                             {
                                 Id = Guid.NewGuid(),
-                                IsRequired = false,
                                 QuestionText = "Enter a name for this order:",
                                 ResponseType = ResponseType.RawText,
                                 Options = {
@@ -167,7 +174,6 @@ namespace DataDrivenFormPoC.Brokers
                             new Question
                             {
                                 Id = Guid.NewGuid(),
-                                IsRequired = false,
                                 QuestionText = "Crust:",
                                 ResponseType = ResponseType.SingleChoiceDropDown,
                                 Options = {
@@ -192,7 +198,6 @@ namespace DataDrivenFormPoC.Brokers
                             new Question
                             {
                                 Id = Guid.NewGuid(),
-                                IsRequired = false,
                                 QuestionText = "Select your toppings (at most 2): ",
                                 ResponseType = ResponseType.MultipleChoice,
                                 Options = {
@@ -233,14 +238,65 @@ namespace DataDrivenFormPoC.Brokers
                             new Question
                             {
                                 Id = Guid.NewGuid(),
-                                IsRequired = false,
                                 QuestionText = "Extra cheese:",
                                 ResponseType = ResponseType.SingleChoiceRadio,
                                 Options = {
                                     new Option {
                                         Id = Guid.NewGuid(),
                                         Value = "Yes please!",
-                                        Order = 1
+                                        Order = 1,
+                                        ChildForm = new OptionChildForm
+                                        {
+                                            Id = Guid.NewGuid(),
+                                            Questions =
+                                            {
+                                                new Question
+                                                {
+                                                    Id = Guid.NewGuid(),
+                                                    Order = 1,
+                                                    QuestionText = "Which cheese(s) would you like (at least 1):",
+                                                    ResponseType = ResponseType.MultipleChoice,
+                                                    QuestionValidationRules =
+                                                    {
+                                                        new QuestionValidationRule
+                                                        {
+                                                            Id = Guid.NewGuid(),
+                                                            ValidationRule = ValidationRule.MultipleChoiceClampSelected,
+                                                            MinValue = 1,
+                                                            MaxValue = 5,
+                                                            ValidationErrorMessage = "Select at least 1 extra cheese",
+                                                        },
+                                                    },
+                                                    Options =
+                                                    {
+                                                        new Option
+                                                        {
+                                                            Id = Guid.NewGuid(),
+                                                            Order = 1,
+                                                            Value = "Mozzarella",
+                                                        },
+                                                        new Option
+                                                        {
+                                                            Id = Guid.NewGuid(),
+                                                            Order = 2,
+                                                            Value = "Provolone",
+                                                        },
+                                                        new Option
+                                                        {
+                                                            Id = Guid.NewGuid(),
+                                                            Order = 3,
+                                                            Value = "Parmasean",
+                                                        },
+                                                        new Option
+                                                        {
+                                                            Id = Guid.NewGuid(),
+                                                            Order = 4,
+                                                            Value = "Pepperjack",
+                                                        },
+                                                    },
+                                                },
+                                            },
+                                        },
                                     },
                                     new Option {
                                         Id = Guid.NewGuid(),
@@ -253,7 +309,6 @@ namespace DataDrivenFormPoC.Brokers
                             new Question
                             {
                                 Id = Guid.NewGuid(),
-                                IsRequired = false,
                                 QuestionText = "When would you like your pizza?:",
                                 ResponseType = ResponseType.Date,
                                 Options = {

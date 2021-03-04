@@ -23,7 +23,6 @@ namespace DataDrivenFormPoC.Views.Components
         public Dictionary<Guid, List<OptionResponse>> QuestionOptionResponsesMap;
         public Dictionary<Guid, List<string>> QuestionValidationMessagesMap { get; private set; }
         public string ValidationMessage { get; set; }
-
         private EditContext FormEditContext { get; set; }
 
         protected async override Task OnInitializedAsync()
@@ -31,6 +30,7 @@ namespace DataDrivenFormPoC.Views.Components
             this.CurrentUser = await this.FormService.RetrieveDebugUserAsync();
             this.Form = await this.FormService.RetrieveDebugFormAsync();
             this.FormResponse = await this.FormService.RetrieveFormResponseForDebugFormAndUserAsync();
+
             InitializeQuestionOptionResponseMap();
             InitializeQuestionValidationMessagesMap();
             InitializeFormResponse();
@@ -51,19 +51,29 @@ namespace DataDrivenFormPoC.Views.Components
             }
             else
             {
-                foreach (var question in this.Form.Questions)
+                BuildQuestionOptionResponsesMapRecursive(this.Form.Questions);
+            }
+        }
+
+        private void BuildQuestionOptionResponsesMapRecursive(IList<Question> questions)
+        {
+            foreach (var question in questions)
+            {
+                this.QuestionOptionResponsesMap[question.Id] = new List<OptionResponse>();
+
+                foreach (var option in question.Options)
                 {
-                    this.QuestionOptionResponsesMap[question.Id] = new List<OptionResponse>();
-
-                    foreach (var option in question.Options)
+                    var optionResponse = new OptionResponse
                     {
-                        var optionResponse = new OptionResponse
-                        {
-                            Option = option,
-                            Question = question,
-                        };
+                        Option = option,
+                        Question = question,
+                    };
 
-                        this.QuestionOptionResponsesMap[question.Id].Add(optionResponse);
+                    this.QuestionOptionResponsesMap[question.Id].Add(optionResponse);
+
+                    if (option.ChildForm != null)
+                    {
+                        BuildQuestionOptionResponsesMapRecursive(option.ChildForm.Questions);
                     }
                 }
             }
@@ -72,10 +82,22 @@ namespace DataDrivenFormPoC.Views.Components
         private void InitializeQuestionValidationMessagesMap()
         {
             this.QuestionValidationMessagesMap = new Dictionary<Guid, List<string>>();
+            BuildQuestionValidationMessagesMapRecursive(this.Form.Questions);
+        }
 
-            foreach (var question in this.Form.Questions)
+        private void BuildQuestionValidationMessagesMapRecursive(IList<Question> questions)
+        {
+            foreach (var question in questions)
             {
                 this.QuestionValidationMessagesMap[question.Id] = new List<string>();
+
+                foreach (var option in question.Options)
+                {
+                    if (option.ChildForm != null)
+                    {
+                        BuildQuestionValidationMessagesMapRecursive(option.ChildForm.Questions);
+                    }
+                }
             }
         }
 

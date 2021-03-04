@@ -5,19 +5,20 @@ using System.Collections.Generic;
 
 namespace DataDrivenFormPoC.Views.Components
 {
-    public partial class QuestionComponent : ComponentBase
+    public partial class FormQuestionsListComponent : ComponentBase
     {
         [Parameter]
-        public Question Question { get; set; }
-        [Parameter]
-        public List<OptionResponse> Responses { get; set; }
-        [Parameter]
-        public List<string> ValidationMessages { get; set; }
+        public List<Question> Questions { get; set; }
         [Parameter]
         public Dictionary<Guid, List<OptionResponse>> ResponsesMap { get; set; }
         [Parameter]
         public Dictionary<Guid, List<string>> ValidationMessagesMap { get; set; }
         [Parameter]
-        public EventCallback RefreshQuestionList { get; set; }
+        public bool IsHidden { get; set; }
+
+        public void RefreshQuestionList()
+        {
+            this.StateHasChanged();
+        }
     }
 }

@@ -12,6 +12,8 @@ namespace DataDrivenFormPoC.Views.Components
         public Question Question { get; set; }
         [Parameter]
         public List<OptionResponse> Responses { get; set; }
+        [Parameter]
+        public EventCallback RefreshQuestionList { get; set; }
         public Guid SelectedOptionId { get; set; }
 
         protected override void OnInitialized() =>
@@ -27,7 +29,7 @@ namespace DataDrivenFormPoC.Views.Components
                 this.Question.Options.First().Id;
         }
 
-        void SelectionChanged(ChangeEventArgs args)
+        async void SelectionChanged(ChangeEventArgs args)
         {
             this.SelectedOptionId = new Guid(args.Value.ToString());
 
@@ -35,6 +37,11 @@ namespace DataDrivenFormPoC.Views.Components
             {
                 optionResponse.IsChecked =
                     optionResponse.Option.Id == this.SelectedOptionId;
+            }
+
+            if (Question.Options.Any(option => option.ChildForm != null))
+            {
+                await RefreshQuestionList.InvokeAsync();
             }
         }
     }

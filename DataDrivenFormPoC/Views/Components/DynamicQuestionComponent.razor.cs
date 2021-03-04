@@ -1,6 +1,8 @@
 ﻿using DataDrivenFormPoC.Models;
 using Microsoft.AspNetCore.Components;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace DataDrivenFormPoC.Views.Components
 {
@@ -10,6 +12,10 @@ namespace DataDrivenFormPoC.Views.Components
         public Question Question { get; set; }
         [Parameter]
         public List<OptionResponse> Responses { get; set; }
+        [Parameter]
+        public Dictionary<Guid, List<OptionResponse>> ResponsesMap { get; set; }
+        [Parameter]
+        public Dictionary<Guid, List<string>> ValidationMessagesMap { get; set; }
         [Parameter]
         public List<ValidationRule> ValidationRules { get; set; }
 
@@ -29,6 +35,12 @@ namespace DataDrivenFormPoC.Views.Components
         public RenderFragment DateTimeQuestionFragment { get; set; }
         [Parameter]
         public RenderFragment UnknownQuestionFragment { get; set; }
+
+        public bool ShouldHideQuestionList(OptionChildForm childForm)
+        {
+            var responseForParentOption = this.Responses.Single(response => response.Option.Id == childForm.ParentOption.Id);
+            return !responseForParentOption.IsChecked;
+        }
 
         private RenderFragment GetQuestionFragmentToRender()
         {
