@@ -24,3 +24,8 @@
         </p>
     </UnknownQuestionFragment>
 </DynamicQuestionComponent>
+
+@foreach(var validationMessage in ValidationMessages)
+{
+    <p style="color:red">@validationMessage</p>            
+}

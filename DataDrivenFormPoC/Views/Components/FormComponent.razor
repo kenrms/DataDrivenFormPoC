@@ -5,14 +5,13 @@
         <EditForm EditContext=FormEditContext
                   OnSubmit=HandleSubmit>
 
-            <ObjectGraphDataAnnotationsValidator />
-            <DataAnnotationsValidator />
 
             @foreach (var (question, questionNumber) in Form.Questions.Select((question, i) => (question, ++i)))
             {
                 <QuestionComponent QuestionNumber=questionNumber
-                                   Question=@question
-                                   Responses=@QuestionOptionResponsesMap[question.Id] />
+                                   Question=question
+                                   Responses=QuestionOptionResponsesMap[question.Id]
+                                   ValidationMessages=QuestionValidationMessagesMap[question.Id] />
 
                 <br />
                 <br />
@@ -21,7 +20,10 @@
             <br />
             <input type="submit" value="Submit" />
 
-            <ValidationSummary />
+            @if (!string.IsNullOrWhiteSpace(ValidationMessage))
+            {
+                <p style="color:red">@ValidationMessage</p>
+            }
 
         </EditForm>
     </Content>

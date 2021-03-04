@@ -158,7 +158,8 @@ namespace DataDrivenFormPoC.Brokers
                                     new QuestionValidationRule
                                     {
                                         Id = Guid.NewGuid(),
-                                        ValidationRule= ValidationRule.TextNotNullOrWhitespace
+                                        ValidationRule = ValidationRule.TextNotNullOrWhitespace,
+                                        ValidationErrorMessage = "Name can not be empty",
                                     },
                                 },
                                 Order = 1,
@@ -252,7 +253,8 @@ namespace DataDrivenFormPoC.Brokers
                                     new QuestionValidationRule
                                     {
                                         Id = Guid.NewGuid(),
-                                        ValidationRule= ValidationRule.DateNotDefault
+                                        ValidationRule = ValidationRule.DateNotDefault,
+                                        ValidationErrorMessage = "Date can not be default (01/01/0001)",
                                     },
                                 },
                                 Order = 5,

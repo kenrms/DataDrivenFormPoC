@@ -21,7 +21,8 @@ namespace DataDrivenFormPoC.Views.Components
         public FormResponse FormResponse { get; set; }
         public User CurrentUser { get; set; }
         public Dictionary<Guid, List<OptionResponse>> QuestionOptionResponsesMap;
-        public Dictionary<Guid, List<ValidationRule>> QuestionValidationRulesMap;
+        public Dictionary<Guid, List<string>> QuestionValidationMessagesMap { get; private set; }
+        public string ValidationMessage { get; set; }
 
         private EditContext FormEditContext { get; set; }
 
@@ -31,22 +32,11 @@ namespace DataDrivenFormPoC.Views.Components
             this.Form = await this.FormService.RetrieveDebugFormAsync();
             this.FormResponse = await this.FormService.RetrieveFormResponseForDebugFormAndUserAsync();
             InitializeQuestionOptionResponseMap();
+            InitializeQuestionValidationMessagesMap();
             InitializeFormResponse();
             this.FormEditContext = new EditContext(this.FormResponse);
-            this.State = ComponentState.Content;
-        }
 
-        private void InitializeFormResponse()
-        {
-            if (this.FormResponse == null)
-            {
-                this.FormResponse = new FormResponse
-                {
-                    FilledBy = this.CurrentUser,
-                    Form = this.Form,
-                    OptionResponses = GetOptionResponses(),
-                };
-            }
+            this.State = ComponentState.Content;
         }
 
         private void InitializeQuestionOptionResponseMap()
@@ -79,29 +69,71 @@ namespace DataDrivenFormPoC.Views.Components
             }
         }
 
+        private void InitializeQuestionValidationMessagesMap()
+        {
+            this.QuestionValidationMessagesMap = new Dictionary<Guid, List<string>>();
+
+            foreach (var question in this.Form.Questions)
+            {
+                this.QuestionValidationMessagesMap[question.Id] = new List<string>();
+            }
+        }
+
+        private void InitializeFormResponse()
+        {
+            if (this.FormResponse == null)
+            {
+                this.FormResponse = new FormResponse
+                {
+                    FilledBy = this.CurrentUser,
+                    Form = this.Form,
+                    OptionResponses = GetOptionResponses(),
+                };
+            }
+        }
+
         public async void HandleSubmit()
         {
-            bool formIsValid = true;
+            this.ValidationMessage = string.Empty;
+            bool isFormValid = ValidateForm();
 
-            // TODO validation bonanza; not a fan of this -- how to show errors in UI?
-            foreach (var q in Form.Questions)
+            if (isFormValid)
             {
-                foreach (var qvr in q.QuestionValidationRules)
-                {
-                    var validator = this.ValidationRuleService
-                        .GetResponseValidator(qvr.ValidationRule);
+                this.FormResponse.DateSubmitted = DateTimeOffset.Now;
+                await this.FormService.SubmitFormResponseAsync(this.FormResponse);
+            }
+            else
+            {
+                this.ValidationMessage = "Some validation error(s) occurred. Please fix them and try again.";
+            }
+        }
 
-                    formIsValid = formIsValid &&
-                        validator.Validate(QuestionOptionResponsesMap[q.Id]);
+        private bool ValidateForm()
+        {
+            bool isFormValid = true;
+
+            foreach (var question in Form.Questions)
+            {
+                this.QuestionValidationMessagesMap[question.Id].Clear();
+
+                foreach (var questionValidationRule in question.QuestionValidationRules)
+                {
+                    var validationRule = this.ValidationRuleService
+                        .GetResponsesValidator(questionValidationRule.ValidationRule);
+
+                    bool areResponsesValid = validationRule.Validate(QuestionOptionResponsesMap[question.Id]);
+
+                    if (!areResponsesValid)
+                    {
+                        this.QuestionValidationMessagesMap[question.Id]
+                            .Add(questionValidationRule.ValidationErrorMessage);
+                    }
+
+                    isFormValid = isFormValid && areResponsesValid;
                 }
             }
 
-            // this shouldn't actually do anything yet
-            this.FormEditContext.Validate();
-
-            this.FormResponse.DateSubmitted = DateTimeOffset.Now;
-
-            bool success = await this.FormService.SubmitFormResponseAsync(this.FormResponse);
+            return isFormValid;
         }
 
         private List<OptionResponse> GetOptionResponses() =>

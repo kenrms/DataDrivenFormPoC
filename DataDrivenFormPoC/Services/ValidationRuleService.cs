@@ -6,7 +6,7 @@ namespace DataDrivenFormPoC.Services
 {
     public class ValidationRuleService : IValidationRuleService
     {
-        public IResponseValidator GetResponseValidator(ValidationRule validationRule)
+        public IResponseValidator GetResponsesValidator(ValidationRule validationRule)
         {
             return validationRule switch
             {
