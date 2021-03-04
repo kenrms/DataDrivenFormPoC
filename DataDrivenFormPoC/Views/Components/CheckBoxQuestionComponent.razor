@@ -1,15 +1,12 @@
-﻿@foreach (var (option, index) in Question.Options.Select((option, i) => (option, i)))
+﻿@foreach (var option in Question.Options)
 {
-    <input type="checkbox"
-           id="@option.Id"
-           name="@option.Id"
-           value=option.Id
-           @bind="@GetOptionResponse(option).IsChecked">
+    <div>
+        <input type="checkbox"
+                id="@option.Id"
+                name="@option.Id"
+                value=option.Id
+                @bind="@GetOptionResponse(option).IsChecked">
 
-    <label for="@option.Id">@option.Value</label>
-
-    @if (index != Question.Options.Count() - 1)
-    {
-        <br />
-    }
+        <label for="@option.Id">@option.Value</label>
+    </div>
 }

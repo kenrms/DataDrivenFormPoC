@@ -1,31 +1,35 @@
-﻿<label>@QuestionNumber. @Question.QuestionText</label>
-<br />
+﻿<div class="question" id=@Question.Id>
 
-<DynamicQuestionComponent Question=Question Responses=Responses>
-    <TextQuestionFragment>
-        <TextQuestionComponent Question=Question 
-                               Responses=Responses />
-    </TextQuestionFragment>
-    <DropDownQuestionFragment>
-        <DropDownQuestionComponent Question=Question Responses=Responses />
-    </DropDownQuestionFragment>
-    <RadioQuestionFragment>
-        <RadioQuestionComponent Question=Question Responses=Responses />
-    </RadioQuestionFragment>
-    <CheckBoxQuestionFragment>
-        <CheckBoxQuestionComponent Question=Question Responses=Responses />
-    </CheckBoxQuestionFragment>
-    <DateQuestionFragment>
-        <DateQuestionComponent Question=Question Responses=Responses />
-    </DateQuestionFragment>
-    <UnknownQuestionFragment>
-        <p>
-            Unknown/unimplemented question type in question: @Question.Id
-        </p>
-    </UnknownQuestionFragment>
-</DynamicQuestionComponent>
+    <label>@QuestionNumber. @Question.QuestionText</label>
+    <br />
 
-@foreach(var validationMessage in ValidationMessages)
-{
-    <p style="color:red">@validationMessage</p>            
-}
+    <DynamicQuestionComponent Question=Question Responses=Responses>
+        <TextQuestionFragment>
+            <TextQuestionComponent Question=Question
+                                   Responses=Responses />
+        </TextQuestionFragment>
+        <DropDownQuestionFragment>
+            <DropDownQuestionComponent Question=Question Responses=Responses />
+        </DropDownQuestionFragment>
+        <RadioQuestionFragment>
+            <RadioQuestionComponent Question=Question Responses=Responses />
+        </RadioQuestionFragment>
+        <CheckBoxQuestionFragment>
+            <CheckBoxQuestionComponent Question=Question Responses=Responses />
+        </CheckBoxQuestionFragment>
+        <DateQuestionFragment>
+            <DateQuestionComponent Question=Question Responses=Responses />
+        </DateQuestionFragment>
+        <UnknownQuestionFragment>
+            <p>
+                Unknown/unimplemented question type in question: @Question.Id
+            </p>
+        </UnknownQuestionFragment>
+    </DynamicQuestionComponent>
+
+    @foreach (var validationMessage in ValidationMessages)
+    {
+        <p style="color:red">@validationMessage</p>
+    }
+
+</div>

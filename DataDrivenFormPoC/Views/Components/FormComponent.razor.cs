@@ -119,7 +119,7 @@ namespace DataDrivenFormPoC.Views.Components
                 foreach (var questionValidationRule in question.QuestionValidationRules)
                 {
                     var validationRule = this.ValidationRuleService
-                        .GetResponsesValidator(questionValidationRule.ValidationRule);
+                        .GetResponsesValidator(questionValidationRule);
 
                     bool areResponsesValid = validationRule.Validate(QuestionOptionResponsesMap[question.Id]);
 

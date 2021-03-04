@@ -1,20 +1,17 @@
 ﻿@foreach (var (option, index) in Question.Options.Select((option, i) => (option, i)))
 {
-    <label for="@option.Id">
+    <div>
+        <label for="@option.Id">
 
-        <input type="radio"
-               id="@option.Id"
-               name="@Question.Id"
-               value="@option.Id"
-               @onchange="SelectionChanged"
-               checked=@(SelectedOptionId == option.Id) />
+            <input type="radio"
+                   id="@option.Id"
+                   name="@Question.Id"
+                   value="@option.Id"
+                   @onchange="SelectionChanged"
+                   checked=@(SelectedOptionId == option.Id) />
 
-        @option.Value
+            @option.Value
 
-    </label>
-
-    @if (index != Question.Options.Count() - 1)
-    {
-        <br />
-    }
+        </label>
+    </div>
 }

@@ -3,9 +3,12 @@ using System.Collections.Generic;
 
 namespace DataDrivenFormPoC.Services.ValidationRules
 {
-    public class TextNotNullEmptyWhitespaceRule : IResponseValidator
+    public class TextNotNullEmptyWhitespaceRule : ValidationRuleBase, IResponseValidator
     {
-        public bool Validate(List<OptionResponse> optionResponses)
+        public TextNotNullEmptyWhitespaceRule(QuestionValidationRule questionValidationRule)
+            : base(questionValidationRule) { }
+
+        public override bool Validate(List<OptionResponse> optionResponses)
         {
             foreach (var optionResponse in optionResponses)
             {

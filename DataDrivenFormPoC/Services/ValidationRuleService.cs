@@ -6,12 +6,16 @@ namespace DataDrivenFormPoC.Services
 {
     public class ValidationRuleService : IValidationRuleService
     {
-        public IResponseValidator GetResponsesValidator(ValidationRule validationRule)
+        public IResponseValidator GetResponsesValidator(QuestionValidationRule questionValidationRule)
         {
-            return validationRule switch
+            return questionValidationRule.ValidationRule switch
             {
-                ValidationRule.TextNotNullOrWhitespace => new TextNotNullEmptyWhitespaceRule(),
-                ValidationRule.DateNotDefault => new DateNotDefaultRule(),
+                ValidationRule.TextNotNullOrWhitespace =>
+                    new TextNotNullEmptyWhitespaceRule(questionValidationRule),
+                ValidationRule.DateNotDefault =>
+                    new DateNotDefaultRule(questionValidationRule),
+                ValidationRule.MultipleChoiceClampSelected =>
+                    new MultipleChoiceClampSelectedRule(questionValidationRule),
                 _ => throw new NotImplementedException(),
             };
         }

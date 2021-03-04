@@ -25,12 +25,14 @@ namespace DataDrivenFormPoC.Views.Bases
             return ValueChanged.InvokeAsync(this.Value);
         }
 
-        public void Disable() {
+        public void Disable()
+        {
             this.IsDisabled = true;
             InvokeAsync(StateHasChanged);
         }
 
-        public void Enable() {
+        public void Enable()
+        {
             this.IsDisabled = false;
             InvokeAsync(StateHasChanged);
         }

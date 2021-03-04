@@ -3,6 +3,7 @@
     public enum ValidationRule
     {
         TextNotNullOrWhitespace,
-        DateNotDefault
+        DateNotDefault,
+        MultipleChoiceClampSelected,
     }
 }

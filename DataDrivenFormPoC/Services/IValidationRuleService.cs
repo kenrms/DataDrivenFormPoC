@@ -5,6 +5,6 @@ namespace DataDrivenFormPoC.Services
 {
     public interface IValidationRuleService
     {
-        IResponseValidator GetResponsesValidator(ValidationRule validationRule);
+        IResponseValidator GetResponsesValidator(QuestionValidationRule questionValidationRule);
     }
 }

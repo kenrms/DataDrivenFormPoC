@@ -193,7 +193,7 @@ namespace DataDrivenFormPoC.Brokers
                             {
                                 Id = Guid.NewGuid(),
                                 IsRequired = false,
-                                QuestionText = "Select your toppings: ",
+                                QuestionText = "Select your toppings (at most 2): ",
                                 ResponseType = ResponseType.MultipleChoice,
                                 Options = {
                                     new Option {
@@ -216,6 +216,17 @@ namespace DataDrivenFormPoC.Brokers
                                         Value = "Pineapple",
                                         Order = 4
                                     },
+                                },
+                                QuestionValidationRules = new List<QuestionValidationRule>
+                                {
+                                    new QuestionValidationRule
+                                    {
+                                        Id = Guid.NewGuid(),
+                                        ValidationRule = ValidationRule.MultipleChoiceClampSelected,
+                                        MinValue = 0,
+                                        MaxValue = 2,
+                                        ValidationErrorMessage = "You can only select up to 2 toppings",
+                                    }
                                 },
                                 Order = 3,
                             },
