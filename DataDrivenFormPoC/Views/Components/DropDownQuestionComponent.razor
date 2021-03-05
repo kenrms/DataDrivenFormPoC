@@ -1,6 +1,10 @@
 ﻿<select @onchange="SelectionChanged" value="@SelectedOptionId">
+    
+    <option value="" selected hidden disabled>-- Select an option --</option>
+
     @foreach (var option in Question.Options)
     {
         <option value="@option.Id" id="@option.Id">@option.Value</option>
     }
+
 </select>

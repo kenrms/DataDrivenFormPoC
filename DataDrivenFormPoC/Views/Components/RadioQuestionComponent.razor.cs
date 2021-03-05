@@ -15,7 +15,7 @@ namespace DataDrivenFormPoC.Views.Components
         public List<OptionResponse> Responses { get; set; }
         [Parameter]
         public EventCallback RefreshQuestionList { get; set; }
-        public Guid SelectedOptionId { get; set; }
+        public Guid? SelectedOptionId { get; set; }
 
         protected async override Task OnInitializedAsync() =>
             await InitializeSelectedOptionAsync();
@@ -27,12 +27,14 @@ namespace DataDrivenFormPoC.Views.Components
 
             this.SelectedOptionId = existingSelection != null ?
                 existingSelection.Option.Id :
-                this.Question.Options.First().Id;
+                // this.Question.Options.First().Id;    // select first option
+                null;
+
 
             await RefreshQuestionListAsync();
         }
 
-        async void SelectionChanged(ChangeEventArgs args)
+        async void SelectionChangedAsync(ChangeEventArgs args)
         {
             this.SelectedOptionId = new Guid(args.Value.ToString());
 
@@ -49,7 +51,7 @@ namespace DataDrivenFormPoC.Views.Components
         {
             // TODO if there is a childform, wipe responses
             // TODO would need to pass in RepsonseMap as parameter
-
+            this.StateHasChanged();
             await RefreshQuestionList.InvokeAsync();
         }
     }

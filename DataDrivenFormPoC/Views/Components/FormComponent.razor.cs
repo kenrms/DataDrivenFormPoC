@@ -34,6 +34,7 @@ namespace DataDrivenFormPoC.Views.Components
             InitializeQuestionOptionResponseMap();
             InitializeQuestionValidationMessagesMap();
             InitializeFormResponse();
+
             this.FormEditContext = new EditContext(this.FormResponse);
 
             this.State = ComponentState.Content;

@@ -15,7 +15,7 @@ namespace DataDrivenFormPoC.Views.Components
         public List<OptionResponse> Responses { get; set; }
         [Parameter]
         public EventCallback RefreshQuestionList { get; set; }
-        public Guid SelectedOptionId { get; set; }
+        public Guid? SelectedOptionId { get; set; }
 
         protected async override Task OnInitializedAsync() =>
             await InitializeSelectedOptionAsync();
@@ -27,7 +27,8 @@ namespace DataDrivenFormPoC.Views.Components
 
             this.SelectedOptionId = existingSelection != null ?
                 existingSelection.Option.Id :
-                this.Question.Options.First().Id;
+                // this.Question.Options.First().Id; // select first option
+                null;
 
             await RefreshQuestionListAsync();
         }

@@ -7,7 +7,7 @@
                    id="@option.Id"
                    name="@Question.Id"
                    value="@option.Id"
-                   @onchange="SelectionChanged"
+                   @onchange="SelectionChangedAsync"
                    checked=@(SelectedOptionId == option.Id) />
 
             @option.Value
