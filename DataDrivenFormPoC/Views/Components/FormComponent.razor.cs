@@ -109,7 +109,7 @@ namespace DataDrivenFormPoC.Views.Components
                 {
                     FilledBy = this.CurrentUser,
                     Form = this.Form,
-                    OptionResponses = GetOptionResponses(),
+                    OptionResponses = GetOptionResponsesFlat(),
                 };
             }
         }
@@ -161,9 +161,7 @@ namespace DataDrivenFormPoC.Views.Components
         private IList<Question> GetQuestionsRecursive(IEnumerable<Question> questions)
         {
             var result = new List<Question>();
-
             result.AddRange(questions);
-
             IEnumerable<Question> childQuestions;
 
             childQuestions = questions.SelectMany(q => q.Options)
@@ -178,7 +176,7 @@ namespace DataDrivenFormPoC.Views.Components
             return result;
         }
 
-        private List<OptionResponse> GetOptionResponses() =>
+        private List<OptionResponse> GetOptionResponsesFlat() =>
             this.QuestionOptionResponsesMap
                 .SelectMany(optionResponses => optionResponses.Value)
                 .ToList();

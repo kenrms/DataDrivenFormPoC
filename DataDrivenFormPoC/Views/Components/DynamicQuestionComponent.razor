@@ -4,10 +4,10 @@
 {
     @if (childForm != null)
     {
-        <FormQuestionsListComponent IsHidden=ShouldHideQuestionList(childForm)
-                                    Questions=childForm.Questions.ToList()
-                                    ResponsesMap=ResponsesMap
-                                    ValidationMessagesMap=ValidationMessagesMap />
+        <QuestionListComponent IsHidden=ShouldHideQuestionList(childForm)
+                               Questions=childForm.Questions.ToList()
+                               ResponsesMap=ResponsesMap
+                               ValidationMessagesMap=ValidationMessagesMap />
     }
 
 }

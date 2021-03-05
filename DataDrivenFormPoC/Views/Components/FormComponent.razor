@@ -6,9 +6,9 @@
                   OnSubmit=HandleSubmitAsync>
 
 
-            <FormQuestionsListComponent Questions=Form.Questions.ToList()
-                                        ResponsesMap=QuestionOptionResponsesMap
-                                        ValidationMessagesMap=QuestionValidationMessagesMap />
+            <QuestionListComponent Questions=Form.Questions.ToList()
+                                   ResponsesMap=QuestionOptionResponsesMap
+                                   ValidationMessagesMap=QuestionValidationMessagesMap />
 
             <br />
             <input type="submit" value="Submit" />
