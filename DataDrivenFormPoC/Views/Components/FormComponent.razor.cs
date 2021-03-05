@@ -114,7 +114,7 @@ namespace DataDrivenFormPoC.Views.Components
             }
         }
 
-        public async void HandleSubmit()
+        public async void HandleSubmitAsync()
         {
             this.ValidationMessage = string.Empty;
             bool isFormValid = ValidateForm();
@@ -134,7 +134,7 @@ namespace DataDrivenFormPoC.Views.Components
         {
             bool isFormValid = true;
 
-            foreach (var question in Form.Questions)
+            foreach (var question in GetQuestionsRecursive(this.Form.Questions))
             {
                 this.QuestionValidationMessagesMap[question.Id].Clear();
 
@@ -156,6 +156,26 @@ namespace DataDrivenFormPoC.Views.Components
             }
 
             return isFormValid;
+        }
+
+        private IList<Question> GetQuestionsRecursive(IEnumerable<Question> questions)
+        {
+            var result = new List<Question>();
+
+            result.AddRange(questions);
+
+            IEnumerable<Question> childQuestions;
+
+            childQuestions = questions.SelectMany(q => q.Options)
+                .Where(o => o.ChildForm != null)
+                .SelectMany(o => o.ChildForm.Questions);
+
+            if (childQuestions.Any())
+            {
+                result.AddRange(GetQuestionsRecursive(childQuestions));
+            }
+
+            return result;
         }
 
         private List<OptionResponse> GetOptionResponses() =>

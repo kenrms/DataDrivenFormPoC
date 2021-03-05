@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace DataDrivenFormPoC.Views.Components
 {
@@ -16,10 +17,10 @@ namespace DataDrivenFormPoC.Views.Components
         public EventCallback RefreshQuestionList { get; set; }
         public Guid SelectedOptionId { get; set; }
 
-        protected override void OnInitialized() =>
-            InitializeSelectedOption();
+        protected async override Task OnInitializedAsync() =>
+            await InitializeSelectedOptionAsync();
 
-        private void InitializeSelectedOption()
+        private async Task InitializeSelectedOptionAsync()
         {
             OptionResponse existingSelection = this.Responses
                 .SingleOrDefault(optionResponse => optionResponse.IsChecked);
@@ -27,6 +28,8 @@ namespace DataDrivenFormPoC.Views.Components
             this.SelectedOptionId = existingSelection != null ?
                 existingSelection.Option.Id :
                 this.Question.Options.First().Id;
+
+            await RefreshQuestionListAsync();
         }
 
         async void SelectionChanged(ChangeEventArgs args)
@@ -39,10 +42,12 @@ namespace DataDrivenFormPoC.Views.Components
                     optionResponse.Option.Id == this.SelectedOptionId;
             }
 
-            if (Question.Options.Any(option => option.ChildForm != null))
-            {
-                await RefreshQuestionList.InvokeAsync();
-            }
+            await RefreshQuestionListAsync();
+        }
+
+        private async Task RefreshQuestionListAsync()
+        {
+            await RefreshQuestionList.InvokeAsync();
         }
     }
 }
