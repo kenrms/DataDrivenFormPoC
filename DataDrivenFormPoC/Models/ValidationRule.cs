@@ -4,6 +4,6 @@
     {
         TextNotNullOrWhitespace,
         DateNotDefault,
-        MultipleChoiceClampSelected,
+        ChoiceClampSelected,
     }
 }

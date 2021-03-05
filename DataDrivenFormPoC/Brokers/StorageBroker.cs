@@ -193,6 +193,17 @@ namespace DataDrivenFormPoC.Brokers
                                         Order = 3
                                     },
                                 },
+                                QuestionValidationRules =
+                                {
+                                    new QuestionValidationRule
+                                    {
+                                        Id = Guid.NewGuid(),
+                                        ValidationRule = ValidationRule.ChoiceClampSelected,
+                                        MinValue = 1,
+                                        MaxValue = 1,
+                                        ValidationErrorMessage = "Gotta have a crust!",
+                                    },
+                                },
                                 Order = 2,
                             },
                             new Question
@@ -227,7 +238,7 @@ namespace DataDrivenFormPoC.Brokers
                                     new QuestionValidationRule
                                     {
                                         Id = Guid.NewGuid(),
-                                        ValidationRule = ValidationRule.MultipleChoiceClampSelected,
+                                        ValidationRule = ValidationRule.ChoiceClampSelected,
                                         MinValue = 0,
                                         MaxValue = 2,
                                         ValidationErrorMessage = "You can only select up to 2 toppings",
@@ -240,6 +251,17 @@ namespace DataDrivenFormPoC.Brokers
                                 Id = Guid.NewGuid(),
                                 QuestionText = "Extra cheese:",
                                 ResponseType = ResponseType.SingleChoiceRadio,
+                                QuestionValidationRules =
+                                {
+                                    new QuestionValidationRule
+                                    {
+                                        Id = Guid.NewGuid(),
+                                        ValidationRule = ValidationRule.ChoiceClampSelected,
+                                        MinValue = 1,
+                                        MaxValue = 1,
+                                        ValidationErrorMessage = "Yes or no? Come on.",
+                                    },
+                                },
                                 Options = {
                                     new Option {
                                         Id = Guid.NewGuid(),
@@ -261,7 +283,7 @@ namespace DataDrivenFormPoC.Brokers
                                                         new QuestionValidationRule
                                                         {
                                                             Id = Guid.NewGuid(),
-                                                            ValidationRule = ValidationRule.MultipleChoiceClampSelected,
+                                                            ValidationRule = ValidationRule.ChoiceClampSelected,
                                                             MinValue = 1,
                                                             MaxValue = 5,
                                                             ValidationErrorMessage = "Select at least 1 extra cheese",

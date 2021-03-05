@@ -14,7 +14,7 @@ namespace DataDrivenFormPoC.Services
                     new TextNotNullEmptyWhitespaceRule(questionValidationRule),
                 ValidationRule.DateNotDefault =>
                     new DateNotDefaultRule(questionValidationRule),
-                ValidationRule.MultipleChoiceClampSelected =>
+                ValidationRule.ChoiceClampSelected =>
                     new MultipleChoiceClampSelectedRule(questionValidationRule),
                 _ => throw new NotImplementedException(),
             };
