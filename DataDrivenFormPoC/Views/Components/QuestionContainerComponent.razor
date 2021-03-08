@@ -1,6 +1,12 @@
 ﻿<div class="question" id=@Question.Id>
-
-    <label>@Question.QuestionText</label>
+    @if (ShowNumberAsLetter)
+    {
+        <label>@((char)(QuestionNumber+64)). @Question.QuestionText</label>
+    }
+    else
+    {
+        <label>@QuestionNumber. @Question.QuestionText</label>
+    }
     <br />
 
     <DynamicQuestionComponent Question=Question

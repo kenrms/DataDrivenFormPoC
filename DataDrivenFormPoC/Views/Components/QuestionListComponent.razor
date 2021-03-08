@@ -1,11 +1,27 @@
 ﻿<div hidden="@IsHidden">
-    @foreach (var question in Questions)
+    @foreach (var (question, i) in Questions.Select((question, index) => (question, ++index)))
     {
-        <QuestionContainerComponent Question=question
-                                    Responses=ResponsesMap[question.Id]
-                                    ValidationMessages=ValidationMessagesMap[question.Id]
-                                    ResponsesMap=ResponsesMap
-                                    ValidationMessagesMap=ValidationMessagesMap
-                                    RefreshQuestionList=RefreshQuestionList />
+        if (!IsChildForm)
+        {
+            <QuestionContainerComponent ShowNumberAsLetter=false
+                                        QuestionNumber=@(BaseIndex + i)
+                                        Question=question
+                                        Responses=ResponsesMap[question.Id]
+                                        ValidationMessages=ValidationMessagesMap[question.Id]
+                                        ResponsesMap=ResponsesMap
+                                        ValidationMessagesMap=ValidationMessagesMap
+                                        RefreshQuestionList=RefreshQuestionList />
+        }
+        else
+        {
+            <QuestionContainerComponent ShowNumberAsLetter=true
+                                        QuestionNumber=i
+                                        Question=question
+                                        Responses=ResponsesMap[question.Id]
+                                        ValidationMessages=ValidationMessagesMap[question.Id]
+                                        ResponsesMap=ResponsesMap
+                                        ValidationMessagesMap=ValidationMessagesMap
+                                        RefreshQuestionList=RefreshQuestionList />
+        }
     }
 </div>

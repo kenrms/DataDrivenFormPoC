@@ -6,11 +6,11 @@ namespace DataDrivenFormPoC.Models
     public class Form
     {
         public Guid Id { get; set; }
-        public IList<Question> Questions { get; set; }
+        public IList<FormSection> Sections { get; set; }
 
         public Form()
         {
-            this.Questions = new List<Question>();
+            this.Sections = new List<FormSection>();
         }
     }
 }

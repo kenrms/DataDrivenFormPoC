@@ -9,7 +9,7 @@ namespace DataDrivenFormPoC.Models
         public ResponseType ResponseType { get; set; }
         public string QuestionText { get; set; }
         public int Order { get; set; }
-        public Form Form { get; set; }
+        public FormSection Section { get; set; }
         public IList<Option> Options { get; set; }
         public IList<QuestionValidationRule> QuestionValidationRules { get; set; }
 

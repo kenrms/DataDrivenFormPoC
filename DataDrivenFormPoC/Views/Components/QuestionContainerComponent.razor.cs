@@ -10,6 +10,10 @@ namespace DataDrivenFormPoC.Views.Components
         [Parameter]
         public Question Question { get; set; }
         [Parameter]
+        public int QuestionNumber { get; set; }
+        [Parameter]
+        public bool ShowNumberAsLetter { get; set; }
+        [Parameter]
         public List<OptionResponse> Responses { get; set; }
         [Parameter]
         public List<string> ValidationMessages { get; set; }

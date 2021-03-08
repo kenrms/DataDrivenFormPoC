@@ -52,7 +52,10 @@ namespace DataDrivenFormPoC.Views.Components
             }
             else
             {
-                BuildQuestionOptionResponsesMapRecursive(this.Form.Questions);
+                foreach (var section in this.Form.Sections)
+                {
+                    BuildQuestionOptionResponsesMapRecursive(section.Questions);
+                }
             }
         }
 
@@ -83,7 +86,11 @@ namespace DataDrivenFormPoC.Views.Components
         private void InitializeQuestionValidationMessagesMap()
         {
             this.QuestionValidationMessagesMap = new Dictionary<Guid, List<string>>();
-            BuildQuestionValidationMessagesMapRecursive(this.Form.Questions);
+
+            foreach (var section in this.Form.Sections)
+            {
+                BuildQuestionValidationMessagesMapRecursive(section.Questions);
+            }
         }
 
         private void BuildQuestionValidationMessagesMapRecursive(IList<Question> questions)
@@ -135,9 +142,15 @@ namespace DataDrivenFormPoC.Views.Components
         {
             bool isFormValid = true;
 
-            foreach (var question in GetQuestionsRecursive(this.Form.Questions))
+            List<Question> allQuestions = GetAllQuestions();
+
+            foreach (var question in allQuestions)
             {
                 this.QuestionValidationMessagesMap[question.Id].Clear();
+
+                var questionValidationRules = question.QuestionValidationRules
+                    .OrderBy(questionValidationRule =>
+                        questionValidationRule.Order);
 
                 foreach (var questionValidationRule in question.QuestionValidationRules)
                 {
@@ -150,6 +163,8 @@ namespace DataDrivenFormPoC.Views.Components
                     {
                         this.QuestionValidationMessagesMap[question.Id]
                             .Add(questionValidationRule.ValidationErrorMessage);
+
+                        break;
                     }
 
                     isFormValid = isFormValid && areResponsesValid;
@@ -157,6 +172,16 @@ namespace DataDrivenFormPoC.Views.Components
             }
 
             return isFormValid;
+        }
+
+        private List<Question> GetAllQuestions()
+        {
+            List<Question> result = new List<Question>();
+            foreach (var section in this.Form.Sections)
+            {
+                result.AddRange(GetQuestionsRecursive(section.Questions));
+            }
+            return result;
         }
 
         private IList<Question> GetQuestionsRecursive(IEnumerable<Question> questions)

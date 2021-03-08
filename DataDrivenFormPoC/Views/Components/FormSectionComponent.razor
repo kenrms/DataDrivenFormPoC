@@ -1,0 +1,10 @@
+﻿<section id=@Section.Id class="section">
+
+    <label>@Section.Description</label>
+
+    <QuestionListComponent BaseIndex=BaseIndex
+                           Questions=Section.Questions.ToList()
+                           ResponsesMap=ResponsesMap
+                           ValidationMessagesMap=ValidationMessagesMap />
+
+</section>

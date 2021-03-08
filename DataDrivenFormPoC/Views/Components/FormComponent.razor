@@ -3,12 +3,19 @@
 <ContainerComponent State=State>
     <Content>
         <EditForm EditContext=FormEditContext
-                  OnSubmit=HandleSubmitAsync>
+                  OnSubmit=HandleSubmitAsync>   
+            @{ 
+                var baseIndex = 0;
+            }  
+            @foreach (var formSection in Form.Sections)
+            {
+                <FormSectionComponent BaseIndex=baseIndex
+                                      Section=formSection
+                                      ResponsesMap=QuestionOptionResponsesMap
+                                      ValidationMessagesMap=QuestionValidationMessagesMap />
 
-
-            <QuestionListComponent Questions=Form.Questions.ToList()
-                                   ResponsesMap=QuestionOptionResponsesMap
-                                   ValidationMessagesMap=QuestionValidationMessagesMap />
+                baseIndex += formSection.Questions.Count();
+            }
 
             <br />
             <input type="submit" value="Submit" />

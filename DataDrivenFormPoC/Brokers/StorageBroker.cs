@@ -40,8 +40,9 @@ namespace DataDrivenFormPoC.Brokers
         public async ValueTask<IList<Form>> SelectAllFormsAsync()
         {
             var forms = this.Forms
-                .Include(form => form.Questions.OrderBy(question => question.Order))
-                .ThenInclude(question => question.Options.OrderBy(option => option.Order));
+                .Include(form => form.Sections.OrderBy(section => section.Order))
+                    .ThenInclude(section => section.Questions.OrderBy(question => question.Order))
+                        .ThenInclude(question => question.Options.OrderBy(option => option.Order));
 
             return await forms.ToListAsync();
         }
@@ -49,18 +50,21 @@ namespace DataDrivenFormPoC.Brokers
         public async ValueTask<Form> SelectFormAsync(Guid formId)
         {
             var form = this.Forms
-                .Include(form => form.Questions.OrderBy(question => question.Order))
-                    .ThenInclude(question => question.Options.OrderBy(option => option.Order))
-                        .ThenInclude(option => option.ChildForm)
-                            .ThenInclude(childForm => childForm.Questions.OrderBy(question => question.Order))
-                                .ThenInclude(questions => questions.Options.OrderBy(option => option.Order))
-                .Include(form => form.Questions.OrderBy(question => question.Order))
-                    .ThenInclude(question => question.Options.OrderBy(option => option.Order))
-                        .ThenInclude(option => option.ChildForm)
-                            .ThenInclude(childForm => childForm.Questions.OrderBy(question => question.Order))
-                                .ThenInclude(questions => questions.QuestionValidationRules)
-                .Include(form => form.Questions.OrderBy(question => question.Order))
-                    .ThenInclude(question => question.QuestionValidationRules)
+                .Include(form => form.Sections.OrderBy(section => section.Order))
+                    .ThenInclude(form => form.Questions.OrderBy(question => question.Order))
+                        .ThenInclude(question => question.Options.OrderBy(option => option.Order))
+                            .ThenInclude(option => option.ChildForm)
+                                .ThenInclude(childForm => childForm.Questions.OrderBy(question => question.Order))
+                                    .ThenInclude(questions => questions.Options.OrderBy(option => option.Order))
+                .Include(form => form.Sections.OrderBy(section => section.Order))
+                    .ThenInclude(form => form.Questions.OrderBy(question => question.Order))
+                        .ThenInclude(question => question.Options.OrderBy(option => option.Order))
+                            .ThenInclude(option => option.ChildForm)
+                                .ThenInclude(childForm => childForm.Questions.OrderBy(question => question.Order))
+                                    .ThenInclude(questions => questions.QuestionValidationRules)
+                .Include(form => form.Sections.OrderBy(section => section.Order))
+                    .ThenInclude(form => form.Questions.OrderBy(question => question.Order))
+                        .ThenInclude(question => question.QuestionValidationRules)
                 .SingleOrDefaultAsync(form => form.Id == formId);
 
             return await form;
@@ -151,7 +155,13 @@ namespace DataDrivenFormPoC.Brokers
             var form = new Form
             {
                 Id = debugFormId,
-                Questions = {
+                Sections = {
+                    new FormSection
+                    {
+                        Id = Guid.NewGuid(),
+                        Description = "Tell us about yourself",
+                        Order = 1,
+                        Questions = {
                             new Question
                             {
                                 Id = Guid.NewGuid(),
@@ -165,12 +175,41 @@ namespace DataDrivenFormPoC.Brokers
                                     new QuestionValidationRule
                                     {
                                         Id = Guid.NewGuid(),
+                                        Order = 1,
                                         ValidationRule = ValidationRule.TextNotNullOrWhitespace,
                                         ValidationErrorMessage = "Name can not be empty",
                                     },
                                 },
                                 Order = 1,
                             },
+                            new Question
+                            {
+                                Id = Guid.NewGuid(),
+                                QuestionText = "When would you like your pizza?:",
+                                ResponseType = ResponseType.Date,
+                                Options = {
+                                    new Option{ Id = Guid.NewGuid(), Order = 1 },
+                                },
+                                QuestionValidationRules = new List<QuestionValidationRule>
+                                {
+                                    new QuestionValidationRule
+                                    {
+                                        Id = Guid.NewGuid(),
+                                        Order = 1,
+                                        ValidationRule = ValidationRule.DateNotDefault,
+                                        ValidationErrorMessage = "Date can not be default (01/01/0001)",
+                                    },
+                                },
+                                Order = 2,
+                            },
+                        },
+                    },
+                    new FormSection
+                    {
+                        Id = Guid.NewGuid(),
+                        Description = "How would you like your pizza?",
+                        Order = 2,
+                        Questions = {
                             new Question
                             {
                                 Id = Guid.NewGuid(),
@@ -199,12 +238,13 @@ namespace DataDrivenFormPoC.Brokers
                                     {
                                         Id = Guid.NewGuid(),
                                         ValidationRule = ValidationRule.ChoiceClampSelected,
+                                        Order = 1,
                                         MinValue = 1,
                                         MaxValue = 1,
                                         ValidationErrorMessage = "Gotta have a crust!",
                                     },
                                 },
-                                Order = 2,
+                                Order = 1,
                             },
                             new Question
                             {
@@ -239,12 +279,13 @@ namespace DataDrivenFormPoC.Brokers
                                     {
                                         Id = Guid.NewGuid(),
                                         ValidationRule = ValidationRule.ChoiceClampSelected,
+                                        Order = 1,
                                         MinValue = 0,
                                         MaxValue = 2,
                                         ValidationErrorMessage = "You can only select up to 2 toppings",
                                     }
                                 },
-                                Order = 3,
+                                Order = 2,
                             },
                             new Question
                             {
@@ -257,6 +298,7 @@ namespace DataDrivenFormPoC.Brokers
                                     {
                                         Id = Guid.NewGuid(),
                                         ValidationRule = ValidationRule.ChoiceClampSelected,
+                                        Order = 1,
                                         MinValue = 1,
                                         MaxValue = 1,
                                         ValidationErrorMessage = "Yes or no? Come on.",
@@ -284,13 +326,13 @@ namespace DataDrivenFormPoC.Brokers
                                                         {
                                                             Id = Guid.NewGuid(),
                                                             ValidationRule = ValidationRule.ChoiceClampSelected,
+                                                            Order = 1,
                                                             MinValue = 1,
                                                             MaxValue = 5,
                                                             ValidationErrorMessage = "Select at least 1 extra cheese",
                                                         },
                                                     },
-                                                    Options =
-                                                    {
+                                                    Options = {
                                                         new Option
                                                         {
                                                             Id = Guid.NewGuid(),
@@ -326,28 +368,11 @@ namespace DataDrivenFormPoC.Brokers
                                         Order = 2
                                     },
                                 },
-                                Order = 4,
+                                Order = 3,
                             },
-                            new Question
-                            {
-                                Id = Guid.NewGuid(),
-                                QuestionText = "When would you like your pizza?:",
-                                ResponseType = ResponseType.Date,
-                                Options = {
-                                    new Option{ Id = Guid.NewGuid(), Order = 1 },
-                                },
-                                QuestionValidationRules = new List<QuestionValidationRule>
-                                {
-                                    new QuestionValidationRule
-                                    {
-                                        Id = Guid.NewGuid(),
-                                        ValidationRule = ValidationRule.DateNotDefault,
-                                        ValidationErrorMessage = "Date can not be default (01/01/0001)",
-                                    },
-                                },
-                                Order = 5,
-                            },
-                    }
+                        },
+                    },
+                },
             };
 
             this.Forms.Add(form);
